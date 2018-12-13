@@ -1,0 +1,31 @@
+server.port: 9090
+
+spring:
+  profiles: default
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: order
+
+app:
+  test: Default property
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    org.springframework: DEBUG
+
+
+---
+
+spring:
+  profiles: test
+
+app:
+  test: Test property
+---
+
+spring:
+  profiles: prod
+app:
+  test: Production test property
