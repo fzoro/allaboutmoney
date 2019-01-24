@@ -17,7 +17,6 @@ class OrderServiceImpl : OrderService {
     lateinit var repo: OrderMongoRepository
 
     @Autowired
-    @Qualifier("moipPaymentProcessorService")
     lateinit var paymentProcessor: PaymentProcessorService
 
     override fun get(id: UUID): Order? = repo.findById(id).unwrap()
