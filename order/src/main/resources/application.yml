@@ -9,23 +9,33 @@ spring:
       database: order
 
 app:
-  test: Default property
+  services:
+      external:
+        wirecard:
+          uri: https://UNDEFINED
+          token: ${WIRECARD_TOKEN:DEV_TOKEN}
+          key: ${WIRECARD_KEY:DEV_KEY}
+          resources:
+            customers: /customers
+            orders: /orders
+            payments: /orders/:order_id/payments
+
 logging:
   config: classpath:logback-spring.xml
   level:
     org.springframework: DEBUG
 
-
 ---
 
 spring:
-  profiles: test
+  profiles: stage
 
 app:
-  test: Test property
+  services:
+      external:
+        wirecard.uri: https://sandbox.moip.com.br/v2
+
 ---
 
 spring:
   profiles: prod
-app:
-  test: Production test property
