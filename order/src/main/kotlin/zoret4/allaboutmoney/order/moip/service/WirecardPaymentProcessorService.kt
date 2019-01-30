@@ -16,6 +16,7 @@ import zoret4.allaboutmoney.order.model.domain.Customer
 import zoret4.allaboutmoney.order.model.domain.Order
 import zoret4.allaboutmoney.order.model.service.contracts.PaymentProcessorService
 import br.com.moip.resource.Customer as WirecardCustomer
+import br.com.moip.resource.Order as WirecardOrder
 
 
 @Service
@@ -26,38 +27,29 @@ class WirecardPaymentProcessorService(val props: AppProperties) : PaymentProcess
     private val client = Client(Client.SANDBOX, auth)
     private val api = API(client)
 
-    override fun checkoutByVendor(order: Order): String {
-
-        //
-
-        /*
-        1. Should create client and create if empty ( VENDOR ID)
-        2. Should create order
-        3. Should return _links.checkout.payCheckout.redirectHref
-         */
-        TODO()
+    override fun checkoutByVendor(customer:Customer, order: Order): String {
+        getOrCreateCustomer(customer)
+        val wirecardOrder = createOrder(order.copy(customerId = customer.id.toString()))
+        return wirecardOrder.links.payCheckout()
     }
 
-    fun getOrCreateCustomer(vendorCustomerId: String): WirecardCustomer {
+    private fun getOrCreateCustomer(customer: Customer): WirecardCustomer {
 
         var vendorCustomer: WirecardCustomer? = null
 
         try {
-            vendorCustomer = getCustomer(vendorCustomerId)
+            vendorCustomer = getCustomer(customer.vendorId)
         } catch (e: ValidationException) {
             if (HttpStatus.NOT_FOUND.value() != e.responseCode) {
                 throw e
             }
         }
-//        return vendorCustomer ?: createCustomer()
-        TODO()
+        return vendorCustomer ?: createCustomer(customer)
     }
 
-    fun getCustomer(vendorCustomerId: String): WirecardCustomer = api.customer().get("CUS-413JP9GMCSW6")
+    private fun createOrder(order:Order): WirecardOrder {
 
-    fun createOrder(): br.com.moip.resource.Order {
-
-        val createdOrder = api.order().create(OrderRequest()
+        return api.order().create(OrderRequest()
                 .ownId("order-id-thisproject")
                 .amount(OrderAmountRequest()
                         .currency("BRL")
@@ -77,10 +69,11 @@ class WirecardPaymentProcessorService(val props: AppProperties) : PaymentProcess
                         .secondary("MOIP_ACCOUNT_ID", AmountRequest().percentual(50), false)
                 )
         )
-        TODO()
+
     }
 
-    fun createCustomer(customer: Customer): WirecardCustomer {
+    private fun getCustomer(vendorCustomerId: String): WirecardCustomer = api.customer().get(vendorCustomerId)
+    private fun createCustomer(customer: Customer): WirecardCustomer {
 
         return with(customer) {
             api.customer().create(CustomerRequest()
@@ -104,22 +97,3 @@ class WirecardPaymentProcessorService(val props: AppProperties) : PaymentProcess
 
 }
 
-
-//
-//val postOrderUri = "${props.services.external.wirecard.uri}${props.services.external.wirecard.uri}"
-//
-//val client = HttpClient.newBuilder().build();
-//val request = HttpRequest.newBuilder()
-//        .uri(URI.create(postOrderUri))
-//        .
-//        .build()
-//val response = client.send(request, HttpResponse.BodyHandlers.ofString());
-//println(response.body())
-//return Pair(
-//order.copy(
-//payment = order.payment.copy(
-//processor = PROCESSOR_NAME,
-//publishedAt = LocalDateTime.now()
-//)
-//),
-//order)

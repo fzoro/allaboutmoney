@@ -25,11 +25,12 @@ data class Payment(val publishedAt: LocalDateTime?, val method: PaymentMethod, v
 
 enum class PaymentMethod {
     VENDOR_CHECKOUT {
-        override fun process(order: Order, processor: PaymentProcessorService): String {
-            return processor.checkoutByVendor(order)
+        override fun process(customer: Customer, order: Order, processor: PaymentProcessorService): String {
+            return processor.checkoutByVendor(customer, order)
         }
     };
-    abstract fun process(order: Order, processor: PaymentProcessorService): String
+
+    abstract fun process(customer: Customer, order: Order, processor: PaymentProcessorService): String
 }
 
 enum class OrderStatus {
