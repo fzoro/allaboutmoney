@@ -4,24 +4,15 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 
 @ConfigurationProperties("app")
 class AppProperties {
-    val services = Services()
+    val upstream = Upstream()
 
-    class Services {
-        val external = External()
+    class Upstream {
+        val wirecard = Wirecard()
 
-        class External {
-            val wirecard = Wirecard()
-
-            class Wirecard {
-                lateinit var uri:String
-                val resources = Resources()
-
-                class Resources {
-                    lateinit var customers: String
-                    lateinit var orders: String
-                    lateinit var payments: String
-                }
-            }
+        class Wirecard {
+            lateinit var uri: String
+            lateinit var token: String
+            lateinit var key: String
         }
     }
 

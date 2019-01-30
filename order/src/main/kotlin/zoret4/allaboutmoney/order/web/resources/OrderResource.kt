@@ -9,7 +9,7 @@ import zoret4.allaboutmoney.order.model.domain.Order
 import zoret4.allaboutmoney.order.model.service.contracts.OrderService
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/orders")
 class OrderResource {
 
     @Autowired
@@ -19,6 +19,6 @@ class OrderResource {
     fun get(@PathVariable id: String) = orNotFound(orderService.get(id.toUUID()))
 
     @PostMapping
-    fun placeOrder(@RequestBody body: Order) = ResponseEntity(orderService.placeOrder(body), HttpStatus.CREATED)
+    fun create(@RequestBody body: Order) = ResponseEntity(orderService.create(body), HttpStatus.CREATED)
 
 }

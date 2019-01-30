@@ -9,21 +9,17 @@ spring:
       database: order
 
 app:
-  services:
-      external:
-        wirecard:
-          uri: https://UNDEFINED
-          token: ${WIRECARD_TOKEN:DEV_TOKEN}
-          key: ${WIRECARD_KEY:DEV_KEY}
-          resources:
-            customers: /customers
-            orders: /orders
-            payments: /orders/:order_id/payments
+  upstream:
+    wirecard:
+      uri: https://mock.com
+      token: WIRECARD_TOKEN
+      key: WIRECARD_KEY
 
 logging:
   config: classpath:logback-spring.xml
   level:
     org.springframework: DEBUG
+    zoret4: DEBUG
 
 ---
 
@@ -31,11 +27,11 @@ spring:
   profiles: stage
 
 app:
-  services:
-      external:
-        wirecard.uri: https://sandbox.moip.com.br/v2
+  upstream:
+    wirecard.uri: https://sandbox.moip.com.br/v2
 
 ---
 
 spring:
   profiles: prod
+

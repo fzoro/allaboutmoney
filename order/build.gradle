@@ -52,6 +52,10 @@ dependencies {
     implementation('org.jetbrains.kotlin:kotlin-stdlib:1.3.20')
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     testImplementation('org.springframework.boot:spring-boot-starter-test')
+
+    // Wirecard
+    implementation('br.com.moip:java-sdk:4.2.0')
+
 }
 
 dependencyManagement {
