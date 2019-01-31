@@ -15,10 +15,10 @@ import java.util.*
 @Service
 class OrderServiceImpl(private val props: AppProperties) : OrderService {
 
-
     companion object {
         val LOG = logger()
     }
+
     @Autowired
     lateinit var repo: OrderMongoRepository
 
@@ -29,13 +29,13 @@ class OrderServiceImpl(private val props: AppProperties) : OrderService {
     override fun get(id: UUID): Order? = repo.findById(id).unwrap()
 
     override fun create(order: Order): String {
+
         repo.save(order)
-        LOG.debug("Order saved here. Requesting order creation on Vendor pre defined=wirecardPaymentProcessorService")
-        val customer = Customer()
-        val payCheckoutUri = order.payment.method.process(customer, order, paymentProcessor)
-        LOG.info("Order saved and posted to vendor.(Order.id={}, Vendor.checkouturi={}", order.id, payCheckoutUri)
+        LOG.info("Order saved. Order.id = {}", order.id)
+        LOG.debug("Requesting order creation on Vendor pre defined=wirecardPaymentProcessorService")
+        val payCheckoutUri = order.payment.method.process(order, paymentProcessor)
+        LOG.info("Order saved and posted to vendor. Order.id={}, Vendor.payCheckoutUri={}", order.id, payCheckoutUri)
         repo.save(order.copy(status = OrderStatus.PUBLISHED))
         return payCheckoutUri
-
     }
 }

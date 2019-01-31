@@ -4,14 +4,11 @@ import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDate
-import java.util.*
-
 
 @Document
 data class Customer(
-        @Id val id: UUID = UUID.randomUUID(),
+        @Id val id: String,
         @Indexed val vendorId: String,
-        @Indexed val externalId: String,
         val fullName: String,
         val email: String,
         val birthDate: LocalDate,
@@ -20,7 +17,9 @@ data class Customer(
         val phoneNumber: String,
         val address: Address,
         val tracer: Tracer
-)
+) {
+    fun isFull(): Boolean = email != null && email.isNotEmpty()
+}
 
 data class Address(val street: String,
                    val streetNumber: String,

@@ -1,4 +1,4 @@
-package zoret4.allaboutmoney.order.moip.service
+package zoret4.allaboutmoney.order.wirecard.service
 
 //import java.net.http.HttpClient
 //import java.net.http.HttpRequest
@@ -10,30 +10,31 @@ import br.com.moip.exception.ValidationException
 import br.com.moip.request.*
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import zoret4.allaboutmoney.order.configuration.logger
 import zoret4.allaboutmoney.order.configuration.props.AppProperties
 import zoret4.allaboutmoney.order.configuration.toDate
 import zoret4.allaboutmoney.order.model.domain.Customer
 import zoret4.allaboutmoney.order.model.domain.Order
 import zoret4.allaboutmoney.order.model.service.contracts.PaymentProcessorService
 import br.com.moip.resource.Customer as WirecardCustomer
-import br.com.moip.resource.Order as WirecardOrder
 
 
 @Service
 class WirecardPaymentProcessorService(val props: AppProperties) : PaymentProcessorService {
 
+    companion object {
+        val LOG = logger()
+    }
 
     private val auth = BasicAuth("TOKEN", "SECRET")
     private val client = Client(Client.SANDBOX, auth)
     private val api = API(client)
 
-    override fun checkoutByVendor(customer:Customer, order: Order): String {
-        getOrCreateCustomer(customer)
-        val wirecardOrder = createOrder(order.copy(customerId = customer.id.toString()))
-        return wirecardOrder.links.payCheckout()
+    override fun checkoutByVendor(order: Order): String {
+        TODO()
     }
 
-    private fun getOrCreateCustomer(customer: Customer): WirecardCustomer {
+    fun getOrCreateCustomer(customer: Customer): WirecardCustomer {
 
         var vendorCustomer: WirecardCustomer? = null
 
@@ -44,10 +45,13 @@ class WirecardPaymentProcessorService(val props: AppProperties) : PaymentProcess
                 throw e
             }
         }
-        return vendorCustomer ?: createCustomer(customer)
+        TODO()
+//        return vendorCustomer ?: createCustomer()
     }
 
-    private fun createOrder(order:Order): WirecardOrder {
+    fun getCustomer(vendorCustomerId: String): WirecardCustomer = api.customer().get(vendorCustomerId)
+
+    fun createOrder(): br.com.moip.resource.Order {
 
         return api.order().create(OrderRequest()
                 .ownId("order-id-thisproject")
@@ -72,9 +76,7 @@ class WirecardPaymentProcessorService(val props: AppProperties) : PaymentProcess
 
     }
 
-    private fun getCustomer(vendorCustomerId: String): WirecardCustomer = api.customer().get(vendorCustomerId)
-    private fun createCustomer(customer: Customer): WirecardCustomer {
-
+    fun createCustomer(customer: Customer): WirecardCustomer {
         return with(customer) {
             api.customer().create(CustomerRequest()
                     .ownId(id.toString())
@@ -94,6 +96,4 @@ class WirecardPaymentProcessorService(val props: AppProperties) : PaymentProcess
                             .zipCode(customer.address.zipCode)))
         }
     }
-
 }
-

@@ -18,6 +18,7 @@ data class Order(
         val payment: Payment,
         val tracer: Tracer)
 
+
 data class Product(val id: String, val price: BigDecimal, val links: Set<String>)
 data class Amount(val total: BigDecimal, val currency: String)
 data class Payment(val publishedAt: LocalDateTime?, val method: PaymentMethod, val processor: String?)
@@ -25,12 +26,12 @@ data class Payment(val publishedAt: LocalDateTime?, val method: PaymentMethod, v
 
 enum class PaymentMethod {
     VENDOR_CHECKOUT {
-        override fun process(customer: Customer, order: Order, processor: PaymentProcessorService): String {
-            return processor.checkoutByVendor(customer, order)
+        override fun process(order: Order, processor: PaymentProcessorService): String {
+            return processor.checkoutByVendor(order)
         }
     };
 
-    abstract fun process(customer: Customer, order: Order, processor: PaymentProcessorService): String
+    abstract fun process(order: Order, processor: PaymentProcessorService): String
 }
 
 enum class OrderStatus {
