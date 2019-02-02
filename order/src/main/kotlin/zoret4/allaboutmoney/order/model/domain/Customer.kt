@@ -8,7 +8,7 @@ import java.time.LocalDate
 @Document
 data class Customer(
         @Id val id: String,
-        @Indexed val vendorId: String,
+        val vendorId: String,
         val fullName: String,
         val email: String,
         val birthDate: LocalDate,
