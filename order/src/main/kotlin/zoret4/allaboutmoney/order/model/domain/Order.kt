@@ -2,7 +2,7 @@ package zoret4.allaboutmoney.order.model.domain
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
-import zoret4.allaboutmoney.order.model.service.contracts.PaymentProcessorService
+import zoret4.allaboutmoney.order.model.strategy.PaymentStrategy
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.util.*
@@ -21,18 +21,7 @@ data class Order(
 
 data class Product(val id: String, val price: BigDecimal, val links: Set<String>)
 data class Amount(val total: BigDecimal, val currency: String)
-data class Payment(val publishedAt: LocalDateTime?, val method: PaymentMethod, val processor: String?)
-
-
-enum class PaymentMethod {
-    VENDOR_CHECKOUT {
-        override fun process(order: Order, processor: PaymentProcessorService): String {
-            return processor.checkoutByVendor(order)
-        }
-    };
-
-    abstract fun process(order: Order, processor: PaymentProcessorService): String
-}
+data class Payment(val publishedAt: LocalDateTime?, val method: PaymentStrategy, val processor: String?)
 
 enum class OrderStatus {
     CREATED, //(created on mongo db) - TO CREATE AN ORDER INDEPENDENT OF MAKING THE PAYMENT (USEFUL FOR CC PAYMENTS)
