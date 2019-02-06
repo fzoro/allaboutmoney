@@ -15,6 +15,8 @@ class TestsHelper {
         }
 
         private fun <T> uninitialized(): T = null as T
+
+        inline fun <reified R : Any> mock(): R = Mockito.mock(R::class.java)
     }
 
 
