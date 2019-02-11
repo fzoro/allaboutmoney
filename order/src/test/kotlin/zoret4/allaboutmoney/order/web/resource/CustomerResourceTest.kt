@@ -17,21 +17,21 @@ import zoret4.allaboutmoney.order.model.domain.Address
 import zoret4.allaboutmoney.order.model.domain.Customer
 import zoret4.allaboutmoney.order.model.domain.TaxonomyType
 import zoret4.allaboutmoney.order.model.domain.Tracer
-import zoret4.allaboutmoney.order.model.service.contracts.OrderService
+import zoret4.allaboutmoney.order.model.service.contracts.CustomerService
 import zoret4.allaboutmoney.order.util.TestsHelper.Companion.any
 import java.time.LocalDate
 
 @ExtendWith(SpringExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class OrderResourceTest {
+class CustomerResourceTest {
 
     @Autowired
     lateinit var testRestTemplate: TestRestTemplate
 
     @MockBean
-    lateinit var orderService: OrderService
+    lateinit var customerService: CustomerService
 
-    private val baseUri = "/orders"
+    private val baseUri = "/customers"
 
     @BeforeEach
     fun setup() {
@@ -39,14 +39,41 @@ class OrderResourceTest {
     }
 
     @Test
-    fun `order not found = 404`() {
+    fun `customer not found = 404`() {
         val result = testRestTemplate.getForEntity("$baseUri/some-id", String::class.java)
         assertNotNull(result)
         assertEquals(HttpStatus.NOT_FOUND, result.statusCode)
     }
 
     @Test
-    fun `order found = 200`() {
+    fun `customer found = 200`() {
 
+        val expectedCustomer = Customer(
+                id = "1",
+                vendorId = "1",
+                fullName = "1",
+                email = "1",
+                birthDate = LocalDate.now(),
+                taxonomyId = "1",
+                taxonomyType = TaxonomyType.CPF,
+                phoneNumber = "1",
+                address = Address(
+                        street = "address",
+                        streetNumber = "address",
+                        complement = "address",
+                        city = "address",
+                        state = "address",
+                        district = "address",
+                        country = "address",
+                        zipCode = "address"
+                ),
+                tracer = Tracer(requestId = "1", createdBy = "zoret4", origin = "unit test")
+        )
+
+        given(customerService.get(any())).willReturn(expectedCustomer)
+
+        val result = testRestTemplate.getForEntity("$baseUri/some-id", String::class.java)
+        assertNotNull(result)
+        assertEquals(HttpStatus.NOT_FOUND, result.statusCode)
     }
 }
