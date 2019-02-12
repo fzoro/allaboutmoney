@@ -7,7 +7,7 @@ import java.time.LocalDate
 @Document
 data class Customer(
         @Id val id: String,
-        val vendorId: String,
+        val vendorId: String?,
         val fullName: String,
         val email: String,
         val birthDate: LocalDate,
@@ -16,9 +16,7 @@ data class Customer(
         val phoneNumber: String,
         val address: Address,
         val tracer: Tracer
-) {
-    fun isFull(): Boolean = email != null && email.isNotEmpty()
-}
+)
 
 data class Address(val street: String,
                    val streetNumber: String,

@@ -49,7 +49,7 @@ class WirecardPaymentProcessorService(val props: AppProperties) : PaymentProcess
 //        return vendorCustomer ?: createCustomer()
     }
 
-    fun getCustomer(vendorCustomerId: String): WirecardCustomer = api.customer().get(vendorCustomerId)
+    fun getCustomer(vendorCustomerId: String?): WirecardCustomer = api.customer().get(vendorCustomerId)
 
     fun createOrder(): br.com.moip.resource.Order {
 

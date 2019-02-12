@@ -5,75 +5,57 @@ import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.ArgumentMatchers
+import org.mockito.BDDMockito.eq
 import org.mockito.BDDMockito.given
 import org.mockito.MockitoAnnotations
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
-import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.http.HttpStatus
 import org.springframework.test.context.junit.jupiter.SpringExtension
-import zoret4.allaboutmoney.order.model.domain.Address
-import zoret4.allaboutmoney.order.model.domain.Customer
-import zoret4.allaboutmoney.order.model.domain.TaxonomyType
-import zoret4.allaboutmoney.order.model.domain.Tracer
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import org.springframework.test.web.servlet.setup.MockMvcBuilders
+import org.springframework.web.context.WebApplicationContext
+import zoret4.allaboutmoney.order.model.domain.factory.CustomerTestFactory
 import zoret4.allaboutmoney.order.model.service.contracts.CustomerService
 import zoret4.allaboutmoney.order.util.TestsHelper.Companion.any
-import java.time.LocalDate
+import zoret4.allaboutmoney.order.web.resources.CustomerResource
 
 @ExtendWith(SpringExtension::class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@WebMvcTest(CustomerResource::class)
 class CustomerResourceTest {
 
-    @Autowired
-    lateinit var testRestTemplate: TestRestTemplate
+//    @Autowired
+    lateinit var mvc: MockMvc
 
     @MockBean
     lateinit var customerService: CustomerService
 
     private val baseUri = "/customers"
+    @Autowired lateinit var context: WebApplicationContext
+
 
     @BeforeEach
     fun setup() {
         MockitoAnnotations.initMocks(this)
+        mvc = MockMvcBuilders.webAppContextSetup(this.context).build()
     }
 
     @Test
     fun `customer not found = 404`() {
-        val result = testRestTemplate.getForEntity("$baseUri/some-id", String::class.java)
-        assertNotNull(result)
-        assertEquals(HttpStatus.NOT_FOUND, result.statusCode)
+        mvc.perform(get("$baseUri/some-id"))
+                .andExpect(status().isNotFound)
+
     }
 
     @Test
     fun `customer found = 200`() {
-
-        val expectedCustomer = Customer(
-                id = "1",
-                vendorId = "1",
-                fullName = "1",
-                email = "1",
-                birthDate = LocalDate.now(),
-                taxonomyId = "1",
-                taxonomyType = TaxonomyType.CPF,
-                phoneNumber = "1",
-                address = Address(
-                        street = "address",
-                        streetNumber = "address",
-                        complement = "address",
-                        city = "address",
-                        state = "address",
-                        district = "address",
-                        country = "address",
-                        zipCode = "address"
-                ),
-                tracer = Tracer(requestId = "1", createdBy = "zoret4", origin = "unit test")
-        )
-
+        val expectedCustomer = CustomerTestFactory.simple()
         given(customerService.get(any())).willReturn(expectedCustomer)
-
-        val result = testRestTemplate.getForEntity("$baseUri/some-id", String::class.java)
-        assertNotNull(result)
-        assertEquals(HttpStatus.NOT_FOUND, result.statusCode)
+        mvc.perform(get("$baseUri/some-id"))
+                .andExpect(status().isOk)
     }
 }
