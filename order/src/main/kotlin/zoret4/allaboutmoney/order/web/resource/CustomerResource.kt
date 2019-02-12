@@ -14,7 +14,7 @@ class CustomerResource {
     @Autowired
     lateinit var customerService: CustomerService
 
-    @GetMapping
+    @GetMapping("/{id}")
     fun get(@PathVariable id: String) = orNotFound(customerService.get(id))
 
     @PostMapping
