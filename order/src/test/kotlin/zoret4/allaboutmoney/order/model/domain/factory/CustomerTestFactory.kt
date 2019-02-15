@@ -3,7 +3,6 @@ package zoret4.allaboutmoney.order.model.domain.factory
 import zoret4.allaboutmoney.order.model.domain.Address
 import zoret4.allaboutmoney.order.model.domain.Customer
 import zoret4.allaboutmoney.order.model.domain.TaxonomyType
-import zoret4.allaboutmoney.order.model.domain.Tracer
 import java.time.LocalDate
 import java.util.*
 
@@ -13,7 +12,7 @@ sealed class CustomerTestFactory {
     companion object {
         fun simple(): Customer = Customer(
                 id = UUID.randomUUID().toString(),
-                vendorId = "String",
+                vendor = null,
                 fullName = "String",
                 email = "String",
                 birthDate = LocalDate.now(),
@@ -27,14 +26,8 @@ sealed class CustomerTestFactory {
                         state = "String",
                         district = "String",
                         country = "String",
-                        zipCode = "String"),
-                tracer = Tracer(
-                        requestId = "String",
-                        createdBy = "String",
-                        origin = "String")
+                        zipCode = "String")
 
         )
-
-
     }
 }

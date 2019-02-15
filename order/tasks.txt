@@ -1,0 +1,20 @@
+**** Customer - theoretically it's done
+
+1 - Get by external id
+2 - Create customer
+3 - Update customer
+
+
+*** Order
+1 - Get Order by external id
+    1.1 It should check new status on wirecard in case the order is not complete
+
+2 - Create Order
+    2.1 - call wirecard to create the order and return the checkout link
+    2.2 - it should only save the ID and the checkout link
+    2.3 - it should save in OrderVendor the response from vendor
+
+
+3 - expose an endpoint to be called by wirecard when the order is paid.
+
+4 - Add tracer to entities and spring sleuth

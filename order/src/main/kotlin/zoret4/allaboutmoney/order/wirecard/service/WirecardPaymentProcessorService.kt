@@ -6,94 +6,95 @@ package zoret4.allaboutmoney.order.wirecard.service
 import br.com.moip.API
 import br.com.moip.Client
 import br.com.moip.authentication.BasicAuth
-import br.com.moip.exception.ValidationException
-import br.com.moip.request.*
-import org.springframework.http.HttpStatus
+import br.com.moip.request.CustomerRequest
+import br.com.moip.request.OrderAmountRequest
+import br.com.moip.request.OrderRequest
+import br.com.moip.request.SubtotalsRequest
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.stereotype.Service
 import zoret4.allaboutmoney.order.configuration.logger
 import zoret4.allaboutmoney.order.configuration.props.AppProperties
-import zoret4.allaboutmoney.order.configuration.toDate
-import zoret4.allaboutmoney.order.model.domain.Customer
 import zoret4.allaboutmoney.order.model.domain.Order
 import zoret4.allaboutmoney.order.model.service.contracts.PaymentProcessorService
 import br.com.moip.resource.Customer as WirecardCustomer
+import br.com.moip.resource.Order as WirecardOrder
 
 
 @Service
-class WirecardPaymentProcessorService(val props: AppProperties) : PaymentProcessorService {
+class WirecardPaymentProcessorService(
+        private val props: AppProperties,
+        private val objectMapper: ObjectMapper) : PaymentProcessorService {
+
+    private val auth: BasicAuth = BasicAuth(props.upstream.wirecard.token, props.upstream.wirecard.key)
+    private val client: Client
+    private val api: API
 
     companion object {
         val LOG = logger()
     }
 
-    private val auth = BasicAuth("TOKEN", "SECRET")
-    private val client = Client(Client.SANDBOX, auth)
-    private val api = API(client)
-
-    override fun checkoutByVendor(order: Order): String {
-        TODO()
+    init {
+        client = Client(Client.SANDBOX, auth)
+        api = API(client)
     }
 
-    fun getOrCreateCustomer(customer: Customer): WirecardCustomer {
 
-        var vendorCustomer: WirecardCustomer? = null
-
-        try {
-            vendorCustomer = getCustomer(customer.vendorId)
-        } catch (e: ValidationException) {
-            if (HttpStatus.NOT_FOUND.value() != e.responseCode) {
-                throw e
-            }
+    override fun checkoutByVendor(vendorCustomerId: String, order: Order): String {
+        val orderRequest: OrderRequest
+        with(order) {
+            orderRequest = OrderRequest()
+                    .ownId(id)
+                    .customer(CustomerRequest().id(vendorCustomerId))
+                    .amount(OrderAmountRequest()
+                            .currency(payment.currency.toString())
+                            .subtotals(SubtotalsRequest()
+                                    .shipping(payment.shipping)
+                                    .addition(payment.addition)
+                                    .discount(payment.discount)
+                            )
+                    )
+            products.forEach { orderRequest.addItem(it.id.toString(), it.quantity, it.description, it.price) }
         }
-        TODO()
-//        return vendorCustomer ?: createCustomer()
+        LOG.info("Posting OrderRequest to WireCard: query={}", orderRequest)
+        val wirecardOrder = api.order().create(orderRequest)
+        return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(wirecardOrder)
     }
 
-    fun getCustomer(vendorCustomerId: String?): WirecardCustomer = api.customer().get(vendorCustomerId)
-
-    fun createOrder(): br.com.moip.resource.Order {
-
-        return api.order().create(OrderRequest()
-                .ownId("order-id-thisproject")
-                .amount(OrderAmountRequest()
-                        .currency("BRL")
-                        .subtotals(SubtotalsRequest()
-                                .shipping(1000)
-                                .addition(100)
-                                .discount(500)
-                        )
-                )
-                .addItem("Nome do produto 1", 1, "Mais info...", 100)
-                .addItem("Nome do produto 2", 2, "Mais info...", 200)
-                .addItem("Nome do produto 3", 3, "Mais info...", 300)
-                .customer(CustomerRequest()
-                        .id("CUSTOMER_ID")
-                )
-                .addReceiver(ReceiverRequest()
-                        .secondary("MOIP_ACCOUNT_ID", AmountRequest().percentual(50), false)
-                )
-        )
-
-    }
-
-    fun createCustomer(customer: Customer): WirecardCustomer {
-        return with(customer) {
-            api.customer().create(CustomerRequest()
-                    .ownId(id.toString())
-                    .fullname(fullName)
-                    .email(email)
-                    .birthdate(ApiDateRequest().date(birthDate.toDate()))
-                    .taxDocument(TaxDocumentRequest.cpf(taxonomyId))
-                    .phone(PhoneRequest().setAreaCode(phoneNumber).setNumber(customer.phoneNumber))
-                    .shippingAddressRequest(ShippingAddressRequest()
-                            .street(customer.address.street)
-                            .streetNumber(customer.address.streetNumber)
-                            .complement(customer.address.complement)
-                            .city(customer.address.city)
-                            .state(customer.address.state)
-                            .district(customer.address.district)
-                            .country(customer.address.country)
-                            .zipCode(customer.address.zipCode)))
-        }
-    }
+//    fun getOrCreateCustomer(customer: Customer): WirecardCustomer {
+//
+//        var vendorCustomer: WirecardCustomer? = null
+//
+//        try {
+//            vendorCustomer = getCustomer(customer.vendorId)
+//        } catch (e: ValidationException) {
+//            if (HttpStatus.NOT_FOUND.value() != e.responseCode) {
+//                throw e
+//            }
+//        }
+//        TODO()
+////        return vendorCustomer ?: createCustomer()
+//    }
+//
+//    fun getCustomer(vendorCustomerId: Serializable?): WirecardCustomer = api.customer().get(vendorCustomerId?.toString())
+//
+//    fun createCustomer(customer: Customer): WirecardCustomer {
+//        return with(customer) {
+//            api.customer().create(CustomerRequest()
+//                    .ownId(id.toString())
+//                    .fullname(fullName)
+//                    .email(email)
+//                    .birthdate(ApiDateRequest().date(birthDate.toDate()))
+//                    .taxDocument(TaxDocumentRequest.cpf(taxonomyId))
+//                    .phone(PhoneRequest().setAreaCode(phoneNumber).setNumber(customer.phoneNumber))
+//                    .shippingAddressRequest(ShippingAddressRequest()
+//                            .street(customer.address.street)
+//                            .streetNumber(customer.address.streetNumber)
+//                            .complement(customer.address.complement)
+//                            .city(customer.address.city)
+//                            .state(customer.address.state)
+//                            .district(customer.address.district)
+//                            .country(customer.address.country)
+//                            .zipCode(customer.address.zipCode)))
+//        }
+//    }
 }

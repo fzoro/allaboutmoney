@@ -5,10 +5,10 @@ import zoret4.allaboutmoney.order.model.service.contracts.PaymentProcessorServic
 
 enum class PaymentStrategy {
     VENDOR_CHECKOUT {
-        override fun process(order: Order, processor: PaymentProcessorService): String {
-            return processor.checkoutByVendor(order)
+        override fun process(vendorCustomerId:String, order: Order, processor: PaymentProcessorService): String {
+            return processor.checkoutByVendor(vendorCustomerId, order)
         }
     };
 
-    abstract fun process(order: Order, processor: PaymentProcessorService): String
+    abstract fun process(vendorCustomerId:String, order: Order, processor: PaymentProcessorService): String
 }
