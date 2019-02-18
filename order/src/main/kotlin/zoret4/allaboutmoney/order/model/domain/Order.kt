@@ -5,19 +5,18 @@ import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 import zoret4.allaboutmoney.order.model.strategy.PaymentStrategy
 import java.io.Serializable
-import java.math.BigDecimal
 import java.util.*
 
 @Document
 data class Order(
         @Id val id: String = UUID.randomUUID().toString(),
         val vendor: BasicDBObject?,
-        val customerId: Serializable,
+        val customerId: String,
         val status: OrderStatus = OrderStatus.DRAFT,
         val products: Set<Product>,
         val payment: Payment)
 
-data class Product(val id: Serializable, val price: Int, val quantity:Int, val description: String)
+data class Product(val id: String, val price: Int, val quantity: Int, val description: String)
 
 // wirecard only accepts int.
 // Valor de frete do item, será somado ao valor dos itens. Em centavos. Ex: R$10,32 deve ser informado 1032. Limite de caracteres: 9.

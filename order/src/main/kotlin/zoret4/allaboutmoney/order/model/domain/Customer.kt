@@ -8,7 +8,7 @@ import java.time.LocalDate
 
 @Document
 data class Customer(
-        @Id val id: Serializable,
+        @Id val id: String,
         val vendor: BasicDBObject?,
         val fullName: String,
         val email: String,
@@ -31,3 +31,6 @@ data class Address(val street: String,
 enum class TaxonomyType {
     CPF, CNPJ, ITIN, SSN
 }
+
+
+

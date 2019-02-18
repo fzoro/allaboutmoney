@@ -22,17 +22,23 @@ class OrderServiceImpl : OrderService {
 
     @Autowired
     lateinit var repo: OrderRepository
+
     @Autowired
     lateinit var customerRepository: CustomerRepository
+
+    @Autowired
+    lateinit var customerService: CustomerService
+
     @Autowired
     @Qualifier("wirecardPaymentProcessorService")
     lateinit var paymentProcessor: PaymentProcessorService
 
 
+
     override fun create(order: Order): String {
         val dbCustomer = customerRepository.findById(order.customerId).unwrap() ?: throw ResourceNotFoundException()
-        if (null == dbCustomer.vendor) throw ValidationException("User ${order.customerId} not posted to Wirecard yet")
-        val vendorCustomerId = dbCustomer.vendor.getString("id")
+        //FIXME Whenever a new vendor is added, it might cause errors, since the customer might be posted to a vendor but not to other. :)
+        val vendorCustomerId = if(null == dbCustomer.vendor)  customerService.postToVendor(dbCustomer) else dbCustomer.vendor.getString("id")
         val vendorOrder = order.payment.method.process(vendorCustomerId, order, paymentProcessor)
         val dbVendorOrder = BasicDBObject.parse(vendorOrder)
         LOG.info("Order saved and posted to vendor. vendorOrder={}", vendorOrder)

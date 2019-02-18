@@ -1,5 +1,7 @@
 package zoret4.allaboutmoney.order
 
+import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.EnableConfigurationProperties
@@ -17,5 +19,10 @@ fun main(args: Array<String>) {
 
 @Bean
 fun objectMapper(): ObjectMapper {
-    return ObjectMapper()
+    val objectMapper = ObjectMapper()
+    objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
+    objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+    return objectMapper
+
+
 }
