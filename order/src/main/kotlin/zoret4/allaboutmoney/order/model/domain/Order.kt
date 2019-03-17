@@ -1,16 +1,14 @@
 package zoret4.allaboutmoney.order.model.domain
 
-import com.mongodb.BasicDBObject
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 import zoret4.allaboutmoney.order.model.strategy.PaymentStrategy
-import java.io.Serializable
 import java.util.*
 
 @Document
 data class Order(
         @Id val id: String = UUID.randomUUID().toString(),
-        val vendor: org.bson.Document?, // TODO USE MAP to get rid of mongo dependency
+        val vendor: Map<*,*>?,
         val customerId: String,
         val status: OrderStatus = OrderStatus.DRAFT,
         val products: Set<Product>,

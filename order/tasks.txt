@@ -1,8 +1,8 @@
 **** Customer - theoretically it's done
 
-1 - Get by external id
-2 - Create customer
-3 - Update customer
+1 - Get by external id - OK
+2 - Create customer - OK
+3 - Update customer - OK
 
 
 *** Order
@@ -10,11 +10,16 @@
     1.1 It should check new status on wirecard in case the order is not complete
 
 2 - Create Order
-    2.1 - call wirecard to create the order and return the checkout link
-    2.2 - it should only save the ID and the checkout link
-    2.3 - it should save in OrderVendor the response from vendor
+    2.1 - call wirecard to create the order and return the checkout link - OK
+    2.2 - it should save in OrderVendor the response from vendor - OK
 
 
 3 - expose an endpoint to be called by wirecard when the order is paid.
 
 4 - Add tracer to entities and spring sleuth
+
+5 - Write unit tests
+    5.1 - write integration tests ( with wiremock and testcontainer)
+    5.2 - write smoke tests (connect to sandbox)
+
+6 - deploy as a docker container

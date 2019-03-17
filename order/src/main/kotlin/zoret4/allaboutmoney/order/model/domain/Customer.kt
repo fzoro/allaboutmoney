@@ -7,7 +7,7 @@ import java.time.LocalDate
 @Document
 data class Customer(
         @Id val id: String,
-        val vendor: org.bson.Document?, // TODO USE MAP to get rid of mongo dependency
+        val vendor: Map<*,*>?,
         val fullName: String,
         val email: String,
         val birthDate: LocalDate,
