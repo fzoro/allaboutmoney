@@ -1,15 +1,13 @@
 package zoret4.allaboutmoney.order.model.domain
 
-import com.mongodb.BasicDBObject
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
-import java.io.Serializable
 import java.time.LocalDate
 
 @Document
 data class Customer(
         @Id val id: String,
-        val vendor: BasicDBObject?,
+        val vendor: org.bson.Document?, // TODO USE MAP to get rid of mongo dependency
         val fullName: String,
         val email: String,
         val birthDate: LocalDate,

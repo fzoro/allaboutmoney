@@ -1,6 +1,7 @@
 package zoret4.allaboutmoney.order.model.service
 
 import com.mongodb.BasicDBObject
+import org.bson.Document
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
@@ -26,10 +27,9 @@ class CustomerServiceImpl : CustomerService {
 
     override fun postToVendor(customer: Customer): String {
         val vendorCustomer = paymentProcessor.postCustomer(customer)
-        val dbVendorCustomer = BasicDBObject.parse(vendorCustomer)
+        val dbVendorCustomer = Document.parse(vendorCustomer)
         LOG.info("Customer posted to vendor. vendorCustomer={}", vendorCustomer)
         repo.save(customer.copy(vendor = dbVendorCustomer))
-        val vendorCustomerId = dbVendorCustomer.getString("_id")
-        return vendorCustomerId
+        return dbVendorCustomer.getString("id")
     }
 }

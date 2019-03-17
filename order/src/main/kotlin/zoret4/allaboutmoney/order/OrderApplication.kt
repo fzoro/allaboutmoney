@@ -20,19 +20,3 @@ fun main(args: Array<String>) {
 
     runApplication<OrderApplication>(*args)
 }
-
-@Bean
-fun objectMapper(): ObjectMapper {
-    abstract class Mixin {
-        @JsonIgnore
-        abstract fun getMoipAccountId(): String
-    }
-
-    val objectMapper = ObjectMapper()
-    objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
-    objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-    objectMapper.addMixIn(Customer::class.java, Mixin::class.java)
-    return objectMapper
-
-
-}

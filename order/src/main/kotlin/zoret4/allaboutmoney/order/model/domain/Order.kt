@@ -10,7 +10,7 @@ import java.util.*
 @Document
 data class Order(
         @Id val id: String = UUID.randomUUID().toString(),
-        val vendor: BasicDBObject?,
+        val vendor: org.bson.Document?, // TODO USE MAP to get rid of mongo dependency
         val customerId: String,
         val status: OrderStatus = OrderStatus.DRAFT,
         val products: Set<Product>,
