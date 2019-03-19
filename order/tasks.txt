@@ -6,8 +6,9 @@
 
 
 *** Order
-1 - Get Order by external id
+1 - Get Order by external id - OK
     1.1 It should check new status on wirecard in case the order is not complete
+    1.2 Expose data with Assembler ( https://docs.spring.io/spring-hateoas/docs/current/reference/html/#fundamentals.resource-assembler )
 
 2 - Create Order
     2.1 - call wirecard to create the order and return the checkout link - OK

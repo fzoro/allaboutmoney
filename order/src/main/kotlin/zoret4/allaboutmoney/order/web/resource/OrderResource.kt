@@ -16,6 +16,9 @@ class OrderResource {
 
 
     @PostMapping
-    fun create(@RequestBody body: Order) = ResponseEntity(orderService.create(body), HttpStatus.OK)
+    fun create(@RequestBody body: Order) = ResponseEntity(orderService.create(body), HttpStatus.CREATED)
+
+    @GetMapping("/{id}")
+    fun get(@PathVariable id:String) = ResponseEntity(orderService.get(id), HttpStatus.OK)
 
 }

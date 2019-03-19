@@ -33,9 +33,11 @@ class OrderServiceImpl : OrderService {
     lateinit var paymentProcessor: PaymentProcessorService
 
 
+    /**
+     * @warning Whenever a new vendor is added, it might cause errors, since the customer might be posted to a vendor but not to other.
+     */
     override fun create(order: Order): String {
         val dbCustomer = customerRepository.findById(order.customerId).unwrap() ?: throw ResourceNotFoundException()
-        //FIXME Whenever a new vendor is added, it might cause errors, since the customer might be posted to a vendor but not to other. :)
         val vendorCustomerId = if (null == dbCustomer.vendor) customerService.postToVendor(dbCustomer) else dbCustomer.vendor.get("id") as String
         val vendorOrder = order.payment.method.process(vendorCustomerId, order, paymentProcessor)
         val dbVendorOrder = Document.parse(vendorOrder)
@@ -48,6 +50,10 @@ class OrderServiceImpl : OrderService {
 
         LOG.debug("Order posted. payCheckoutUri={}", payCheckoutUri)
         return payCheckoutUri
+    }
+
+    override fun get(id: String):Order {
+        return repo.findById(id).unwrap() ?: throw ResourceNotFoundException()
     }
 }
 
