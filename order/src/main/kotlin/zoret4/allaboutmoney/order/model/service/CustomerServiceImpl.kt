@@ -1,8 +1,6 @@
 package zoret4.allaboutmoney.order.model.service
 
-import com.mongodb.BasicDBObject
 import org.bson.Document
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import zoret4.allaboutmoney.order.configuration.logger
@@ -12,18 +10,13 @@ import zoret4.allaboutmoney.order.model.service.contracts.CustomerService
 import zoret4.allaboutmoney.order.model.service.contracts.PaymentProcessorService
 
 @Service
-class CustomerServiceImpl : CustomerService {
+class CustomerServiceImpl(private val repo: CustomerRepository,
+                          @Qualifier("wirecardPaymentProcessorService")
+                          private val paymentProcessor: PaymentProcessorService) : CustomerService {
 
     companion object {
         val LOG = logger()
     }
-
-    @Autowired
-    lateinit var repo: CustomerRepository
-
-    @Autowired
-    @Qualifier("wirecardPaymentProcessorService")
-    lateinit var paymentProcessor: PaymentProcessorService
 
     override fun postToVendor(customer: Customer): String {
         val vendorCustomer = paymentProcessor.postCustomer(customer)

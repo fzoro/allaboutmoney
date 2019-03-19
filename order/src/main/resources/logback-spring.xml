@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <!-- Keep Spring Boot default conf -->
-    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
 
     <!-- Keep Spring Boot console appender as is -->
-    <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
 
     <!-- Refer to a Spring known property to make it available from Logback (http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#_environment_properties)  -->
     <springProperty name="logging.path" source="logging.path"/>
@@ -29,7 +29,7 @@
     </appender>
 
     <root level="INFO">
-        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="CONSOLE"/>
         <!--<appender-ref ref="FILE" />-->
     </root>
 

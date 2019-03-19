@@ -71,7 +71,6 @@ dependencies {
     testCompile("org.mockito:mockito-junit-jupiter:$mockitoVersion")
     testCompile('net.bytebuddy:byte-buddy:1.9.9')
 
-
     // Wirecard
     implementation('br.com.moip:java-sdk:4.2.0')
 

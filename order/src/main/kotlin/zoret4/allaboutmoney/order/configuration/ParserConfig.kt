@@ -8,8 +8,6 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
 
 
-
-
 @Configuration
 class ParserConfig {
     @Bean
@@ -18,6 +16,7 @@ class ParserConfig {
             @JsonIgnore
             abstract fun getMoipAccountId(): String
         }
+
         val b = Jackson2ObjectMapperBuilder()
         b.indentOutput(true).mixIn(Customer::class.java, CustomerMixin::class.java)
         b.serializationInclusion(JsonInclude.Include.NON_NULL)

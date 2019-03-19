@@ -7,7 +7,7 @@ import java.time.LocalDate
 @Document
 data class Customer(
         @Id val id: String,
-        val vendor: Map<*,*>?,
+        val vendor: Map<*, *>?,
         val fullName: String,
         val email: String,
         val birthDate: LocalDate,

@@ -13,26 +13,14 @@ import zoret4.allaboutmoney.order.model.repository.CustomerRepository
 import zoret4.allaboutmoney.order.model.repository.OrderRepository
 
 @Service
-class OrderServiceImpl : OrderService {
-
+class OrderServiceImpl (private val repo: OrderRepository,
+                        private val customerRepository: CustomerRepository,
+                        private val customerService: CustomerService,
+                        @Qualifier("wirecardPaymentProcessorService")
+                        private val paymentProcessor: PaymentProcessorService): OrderService {
     companion object {
         val LOG = logger()
     }
-
-    @Autowired
-    lateinit var repo: OrderRepository
-
-    @Autowired
-    lateinit var customerRepository: CustomerRepository
-
-    @Autowired
-    lateinit var customerService: CustomerService
-
-    @Autowired
-    @Qualifier("wirecardPaymentProcessorService")
-    lateinit var paymentProcessor: PaymentProcessorService
-
-
     /**
      * @warning Whenever a new vendor is added, it might cause errors, since the customer might be posted to a vendor but not to other.
      */
@@ -52,8 +40,10 @@ class OrderServiceImpl : OrderService {
         return payCheckoutUri
     }
 
-    override fun get(id: String):Order {
-        return repo.findById(id).unwrap() ?: throw ResourceNotFoundException()
+    override fun get(id: String): Order {
+        val order = repo.findById(id).unwrap() ?: throw ResourceNotFoundException()
+        LOG.debug("get order by id={}. response={}", id, order)
+        return order
     }
 }
 

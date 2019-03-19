@@ -4,5 +4,5 @@ import zoret4.allaboutmoney.order.model.domain.Order
 
 interface OrderService {
     fun create(order: Order): String
-    fun get(id: String):Order
+    fun get(id: String): Order
 }

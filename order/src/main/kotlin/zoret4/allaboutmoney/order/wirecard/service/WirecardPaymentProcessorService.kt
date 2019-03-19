@@ -1,8 +1,6 @@
 package zoret4.allaboutmoney.order.wirecard.service
 
-//import java.net.http.HttpClient
-//import java.net.http.HttpRequest
-//import java.net.http.HttpResponse
+
 import br.com.moip.API
 import br.com.moip.Client
 import br.com.moip.authentication.BasicAuth
@@ -22,7 +20,7 @@ import br.com.moip.resource.Order as WirecardOrder
 
 @Service
 class WirecardPaymentProcessorService(
-        private val props: AppProperties,
+        props: AppProperties,
         private val objectMapper: ObjectMapper) : PaymentProcessorService {
 
     private val auth: BasicAuth = BasicAuth(props.upstream.wirecard.token, props.upstream.wirecard.key)
@@ -36,8 +34,8 @@ class WirecardPaymentProcessorService(
     init {
         client = Client(Client.SANDBOX, auth)
         api = API(client)
-    }
 
+    }
 
     override fun checkoutByVendor(vendorCustomerId: String, order: Order): String {
         val orderRequest: OrderRequest
