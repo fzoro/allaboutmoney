@@ -1,0 +1,170 @@
+{
+  "_type": "export",
+  "__export_format": 3,
+  "__export_date": "2019-03-19T04:22:06.664Z",
+  "__export_source": "insomnia.desktop.app:v6.3.2",
+  "resources": [
+    {
+      "_id": "wrk_6b23a54fc305476bac61010de36c762a",
+      "created": 1550427253262,
+      "description": "",
+      "modified": 1550427253262,
+      "name": "Insomnia",
+      "parentId": null,
+      "_type": "workspace"
+    },
+    {
+      "_id": "env_73b1e8b16649404291bb8f5392184c71",
+      "color": null,
+      "created": 1550427253280,
+      "data": {},
+      "isPrivate": false,
+      "metaSortKey": 1550427253280,
+      "modified": 1550427253280,
+      "name": "New Environment",
+      "parentId": "wrk_6b23a54fc305476bac61010de36c762a",
+      "_type": "environment"
+    },
+    {
+      "_id": "jar_10734575fa8647cbbb1b46e9b4910ee6",
+      "cookies": [],
+      "created": 1550427253281,
+      "modified": 1550427253281,
+      "name": "Default Jar",
+      "parentId": "wrk_6b23a54fc305476bac61010de36c762a",
+      "_type": "cookie_jar"
+    },
+    {
+      "_id": "fld_c4382e898de64d2183272e64327f38cf",
+      "created": 1550429398365,
+      "description": "",
+      "environment": {},
+      "metaSortKey": -1550429398365,
+      "modified": 1550429405860,
+      "name": "Customers",
+      "parentId": "wrk_6b23a54fc305476bac61010de36c762a",
+      "_type": "request_group"
+    },
+    {
+      "_id": "fld_17d40706f5b94cccbf8104a374ace510",
+      "created": 1550430652256,
+      "description": "",
+      "environment": {},
+      "metaSortKey": -1550430652256,
+      "modified": 1550430652256,
+      "name": "Orders",
+      "parentId": "wrk_6b23a54fc305476bac61010de36c762a",
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_306c617b3c744aa885428eaa847a4388",
+      "authentication": {},
+      "body": {},
+      "created": 1550429422498,
+      "description": "",
+      "headers": [],
+      "isPrivate": false,
+      "metaSortKey": -1550429422498,
+      "method": "GET",
+      "modified": 1552854934906,
+      "name": "get",
+      "parameters": [],
+      "parentId": "fld_c4382e898de64d2183272e64327f38cf",
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingMaxTimelineDataSize": 1000,
+      "settingRebuildPath": true,
+      "settingSendCookies": true,
+      "settingStoreCookies": true,
+      "url": "http://localhost:8780/customers/11aaaa-test",
+      "_type": "request"
+    },
+    {
+      "_id": "req_69a4bb6f6fda4b8da0d7c595d68a3421",
+      "authentication": {},
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"id\": \"12aaaa-test\",\n\t\"fullName\": \"Fábio Zoroastro de Souza\",\n\t\"email\": \"fabiozoroastro@gmail.com\",\n\t\"birthDate\": \"1987-12-24\",\n\t\"taxonomyId\": \"01627467677\",\n\t\"taxonomyType\": \"CPF\",\n\t\"phoneNumber\": \"34973333\",\n\t\"address\": {\n\t\t\"street\": \"Desembargador Afonso Lages\",\n\t\t\"streetNumber\": \"458\",\n\t\t\"complement\": \"AP302\",\n\t\t\"district\": \"Dona Clara\",\n\t\t\"city\": \"Belo Horizonte\",\n\t\t\"state\": \"Minas Gerais\",\n\t\t\"country\": \"Brasil\",\n\t\t\"zipCode\": \"31260250\"\n\t}\n}"
+      },
+      "created": 1550429659314,
+      "description": "",
+      "headers": [
+        {
+          "id": "pair_c0b96c7c8d934b3ea62e302f4038c6ff",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "isPrivate": false,
+      "metaSortKey": -1550429659314,
+      "method": "POST",
+      "modified": 1552960997600,
+      "name": "create",
+      "parameters": [],
+      "parentId": "fld_c4382e898de64d2183272e64327f38cf",
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingMaxTimelineDataSize": 1000,
+      "settingRebuildPath": true,
+      "settingSendCookies": true,
+      "settingStoreCookies": true,
+      "url": "http://localhost:8780/customers/",
+      "_type": "request"
+    },
+    {
+      "_id": "req_9cab07cb06114d7a840f4c1326ebceb3",
+      "authentication": {},
+      "body": {},
+      "created": 1550430657377,
+      "description": "",
+      "headers": [],
+      "isPrivate": false,
+      "metaSortKey": -1550430657377,
+      "method": "GET",
+      "modified": 1552961038973,
+      "name": "get",
+      "parameters": [],
+      "parentId": "fld_17d40706f5b94cccbf8104a374ace510",
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingMaxTimelineDataSize": 1000,
+      "settingRebuildPath": true,
+      "settingSendCookies": true,
+      "settingStoreCookies": true,
+      "url": "http://localhost:8780/orders/0fd4b488-33d3-492c-978f-7768ac2138f1",
+      "_type": "request"
+    },
+    {
+      "_id": "req_99d24d342a554717854e94c558051908",
+      "authentication": {},
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"customerId\": \"12aaaa-test\",\n\t\"products\": [{\n\t\t\t\"id\": \"product-1\",\n\t\t\t\"price\": 10,\n\t\t\t\"quantity\": 2,\n\t\t\t\"description\": \"plano mensal\"\n\t\t},\n\t\t{\n\t\t\t\"id\": \"product-2\",\n\t\t\t\"price\": 150,\n\t\t\t\"quantity\": 1,\n\t\t\t\"description\": \"plano vitalício\"\n\t\t}\n\t],\n\t\"payment\": {\n\t\t\"shipping\": 10,\n\t\t\"addition\": 5,\n\t\t\"discount\": 4,\n\t\t\"currency\": \"BRL\",\n\t\t\"method\": \"VENDOR_CHECKOUT\",\n\t\t\"processor\": \"WIRECARD\"\n\t}\n}"
+      },
+      "created": 1550430662509,
+      "description": "",
+      "headers": [
+        {
+          "id": "pair_2d724d7d41d148efbf84b9dfcb6a261e",
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "isPrivate": false,
+      "metaSortKey": -1550430662509,
+      "method": "POST",
+      "modified": 1552961001855,
+      "name": "create",
+      "parameters": [],
+      "parentId": "fld_17d40706f5b94cccbf8104a374ace510",
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingMaxTimelineDataSize": 1000,
+      "settingRebuildPath": true,
+      "settingSendCookies": true,
+      "settingStoreCookies": true,
+      "url": "http://localhost:8780/orders/",
+      "_type": "request"
+    }
+  ]
+}
