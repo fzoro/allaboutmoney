@@ -1,6 +1,7 @@
 package zoret4.allaboutmoney.order.model.domain
 
 import org.springframework.data.annotation.Id
+import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.mapping.Document
 import zoret4.allaboutmoney.order.model.strategy.PaymentStrategy
 import java.util.*
@@ -12,7 +13,10 @@ data class Order(
         val customerId: String,
         val status: OrderStatus = OrderStatus.DRAFT,
         val products: Set<Product>,
-        val payment: Payment)
+        val payment: Payment,
+        val events: Map<*, *>?,
+        @Version var version: Long?)
+
 
 data class Product(val id: String, val price: Int, val quantity: Int, val description: String)
 
@@ -28,10 +32,12 @@ data class Payment(
 )
 
 enum class OrderStatus {
-    DRAFT, //(created on mongo db) - TO CREATE AN ORDER INDEPENDENT OF MAKING THE PAYMENT (USEFUL FOR CC PAYMENTS)
-    PUBLISHED, // (posted to the payment processor) ( USEFUL FOR BOLETO and CC PAYMENTS )
-    ERROR_FROM_PROCESSOR, // error from processor
-    SUCCESS_FROM_PROCESSOR // success_from_processor
+    DRAFT,// only created on app's database
+    CREATED, // posted to vendor successfully
+    WAITING_VENDOR, // waiting confirmation from vendor
+    PAID, // paid on vendor
+    NOT_PAID, //canceled by vendor
+    REVERTED // reverted/chargeback by vendor
 }
 
 enum class PaymentProcessor {

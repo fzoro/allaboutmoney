@@ -27,7 +27,6 @@ sealed class CustomerTestFactory {
                         district = "String",
                         country = "String",
                         zipCode = "String")
-
         )
     }
 }

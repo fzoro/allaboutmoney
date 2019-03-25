@@ -1,6 +1,7 @@
 package zoret4.allaboutmoney.order.model.domain
 
 import org.springframework.data.annotation.Id
+import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDate
 
@@ -14,7 +15,8 @@ data class Customer(
         val taxonomyId: String,
         val taxonomyType: TaxonomyType,
         val phoneNumber: String,
-        val address: Address
+        val address: Address,
+        @Version var version: Long?
 )
 
 data class Address(val street: String,

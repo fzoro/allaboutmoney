@@ -20,7 +20,7 @@ import br.com.moip.resource.Order as WirecardOrder
 
 @Service
 class WirecardPaymentProcessorService(
-        props: AppProperties,
+        private val props: AppProperties,
         private val objectMapper: ObjectMapper) : PaymentProcessorService {
 
     private val auth: BasicAuth = BasicAuth(props.upstream.wirecard.token, props.upstream.wirecard.key)
@@ -51,7 +51,7 @@ class WirecardPaymentProcessorService(
                                     .discount(payment.discount)
                             )
                     )
-            products.forEach { orderRequest.addItem(it.id.toString(), it.quantity, it.description, it.price) }
+            products.forEach { orderRequest.addItem(it.id, it.quantity, it.description, it.price) }
         }
         LOG.info("Posting OrderRequest to WireCard: query={}", orderRequest)
         val wirecardOrder = api.order().create(orderRequest)
@@ -90,6 +90,13 @@ class WirecardPaymentProcessorService(
         val wirecardCustomer = api.customer().create(customerRequest)
         return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(wirecardCustomer)
 
+    }
+
+    override fun getOrder(orderId: String) :String{
+        val wirecardOrder = api.order().get(orderId)
+        LOG.info("success on getting wirecard order by id={}", orderId)
+        LOG.debug("wirecard.order={}", wirecardOrder)
+        return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(wirecardOrder)
     }
 }
 //    fun getOrCreateCustomer(customer: Customer): WirecardCustomer {

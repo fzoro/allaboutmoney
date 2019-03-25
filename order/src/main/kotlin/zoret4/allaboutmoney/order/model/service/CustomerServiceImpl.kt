@@ -22,7 +22,8 @@ class CustomerServiceImpl(private val repo: CustomerRepository,
         val vendorCustomer = paymentProcessor.postCustomer(customer)
         val dbVendorCustomer = Document.parse(vendorCustomer)
         LOG.info("Customer posted to vendor. vendorCustomer={}", vendorCustomer)
-        repo.save(customer.copy(vendor = dbVendorCustomer))
+        val updatedCustomer = customer.copy(vendor = dbVendorCustomer)
+        repo.save(updatedCustomer)
         return dbVendorCustomer.getString("id")
     }
 }
