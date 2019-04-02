@@ -13,6 +13,17 @@ class AppProperties {
             lateinit var uri: String
             lateinit var token: String
             lateinit var key: String
+            val preferences = Preferences()
+
+            class Preferences {
+                val notifications = Notifications()
+
+                class Notifications {
+                    lateinit var target: String
+                    lateinit var events: List<String>
+                }
+            }
+
         }
     }
 

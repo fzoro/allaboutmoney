@@ -1,7 +1,6 @@
 package zoret4.allaboutmoney.order.model.service.contracts
 
 import org.bson.Document
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.data.rest.webmvc.ResourceNotFoundException
 import org.springframework.stereotype.Service
 import zoret4.allaboutmoney.order.configuration.logger
@@ -10,13 +9,13 @@ import zoret4.allaboutmoney.order.model.domain.Order
 import zoret4.allaboutmoney.order.model.domain.OrderStatus
 import zoret4.allaboutmoney.order.model.repository.CustomerRepository
 import zoret4.allaboutmoney.order.model.repository.OrderRepository
+import zoret4.allaboutmoney.order.model.service.contracts.vendor.VendorOrderService
 
 @Service
 class OrderServiceImpl(private val repo: OrderRepository,
                        private val customerRepository: CustomerRepository,
                        private val customerService: CustomerService,
-                       @Qualifier("wirecardPaymentProcessorService")
-                       private val paymentProcessor: PaymentProcessorService) : OrderService {
+                       private val vendorOrderService: VendorOrderService) : OrderService {
     companion object {
         val LOG = logger()
     }
@@ -27,7 +26,7 @@ class OrderServiceImpl(private val repo: OrderRepository,
     override fun create(order: Order): String {
         val dbCustomer = customerRepository.findById(order.customerId).unwrap() ?: throw ResourceNotFoundException()
         val vendorCustomerId = if (null == dbCustomer.vendor) customerService.postToVendor(dbCustomer) else dbCustomer.vendor?.get("id") as String
-        val vendorOrder = order.payment.method.process(vendorCustomerId, order, paymentProcessor)
+        val vendorOrder = order.payment.method.process(vendorCustomerId, order, vendorOrderService)
         val dbVendorOrder = Document.parse(vendorOrder)
         LOG.info("Order saved and posted to vendor. vendorOrder={}", vendorOrder)
         repo.save(order.copy(status = OrderStatus.CREATED, vendor = dbVendorOrder))

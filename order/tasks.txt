@@ -1,5 +1,7 @@
 **** Customer - theoretically it's done
 *** Order
+
+### Features
 1 - expose an endpoint to be called by wirecard when the order is paid.
 2 - Expose data with Assembler ( https://docs.spring.io/spring-hateoas/docs/current/reference/html/#fundamentals.resource-assembler )
 3 - Write unit tests
@@ -7,3 +9,9 @@
     5.2 - write smoke tests (connect to sandbox)
 4 - Add tracer to entities and spring sleuth
 5 - deploy as a docker container
+
+
+
+### Fixes
+1 - phone number converted to country code + area code + phone number (fix the code and the tests
+2 - the product amount(integer). what's the solution?

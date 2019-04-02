@@ -16,6 +16,12 @@ app:
       uri: https://mock.com
       token: ${WIRECARD_TOKEN}
       key: ${WIRECARD_KEY}
+      preferences.notifications:
+        target: ${VENDOR_CALLBACK_EVENTS:http://localhost:8780/events}
+        events:
+          - ORDER.PAID
+          - ORDER.NOT_PAID
+          - ORDER.REVERTED
 
 logging:
   config: classpath:logback-spring.xml

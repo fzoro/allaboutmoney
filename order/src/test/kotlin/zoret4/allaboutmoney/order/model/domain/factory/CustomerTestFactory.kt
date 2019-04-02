@@ -29,6 +29,5 @@ sealed class CustomerTestFactory {
                         zipCode = "String"),
                 version = 0L
         )
-
     }
 }
