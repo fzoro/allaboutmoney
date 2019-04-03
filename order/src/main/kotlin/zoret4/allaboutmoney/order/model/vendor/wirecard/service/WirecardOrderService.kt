@@ -6,9 +6,11 @@ import br.com.moip.request.OrderAmountRequest
 import br.com.moip.request.OrderRequest
 import br.com.moip.request.SubtotalsRequest
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.springframework.data.rest.webmvc.ResourceNotFoundException
 import org.springframework.stereotype.Service
 import zoret4.allaboutmoney.order.configuration.logger
 import zoret4.allaboutmoney.order.configuration.props.AppProperties
+import zoret4.allaboutmoney.order.configuration.toJsonWithMapper
 import zoret4.allaboutmoney.order.model.domain.Order
 import zoret4.allaboutmoney.order.model.service.contracts.vendor.VendorOrderService
 
@@ -23,10 +25,10 @@ class WirecardOrderService(private val props: AppProperties,
 
     override fun getOrder(orderId: String): String {
         LOG.debug("retrieving order from database. order.id={}", orderId)
-        val wirecardOrder = api.order().get(orderId)
+        val wOrder = api.order().get(orderId) ?: throw ResourceNotFoundException()
         LOG.info("success on getting wirecard order by id={}", orderId)
-        LOG.debug("wirecard.order={}", wirecardOrder)
-        return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(wirecardOrder)
+        LOG.debug("wirecard.order={}", wOrder)
+        return wOrder.toJsonWithMapper(objectMapper)
     }
 
     override fun checkoutByVendor(vendorCustomerId: String, order: Order): String {
@@ -45,9 +47,9 @@ class WirecardOrderService(private val props: AppProperties,
             products.forEach { orderRequest.addItem(it.id, it.quantity, it.description, it.price) }
         }
         LOG.info("Posting OrderRequest to WireCard: query={}", orderRequest)
-        val wirecardOrder = api.order().create(orderRequest)
-        LOG.debug("wirecard order created on their side. response={}", wirecardOrder)
-        return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(wirecardOrder)
+        val wOrder = api.order().create(orderRequest)
+        LOG.debug("wirecard order created on their side. response={}", wOrder)
+        return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(wOrder)
     }
 
 }

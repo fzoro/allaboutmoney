@@ -10,7 +10,7 @@ import java.util.*
 sealed class CustomerTestFactory {
 
     companion object {
-        fun simple(): Customer = Customer(
+        fun simple() = Customer(
                 id = UUID.randomUUID().toString(),
                 vendor = null,
                 fullName = "String",

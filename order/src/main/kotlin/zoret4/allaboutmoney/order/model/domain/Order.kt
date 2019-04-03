@@ -9,12 +9,12 @@ import java.util.*
 @Document
 data class Order(
         @Id val id: String = UUID.randomUUID().toString(),
-        val vendor: Map<*, *>?,
+        val vendor: Map<*, *>? = null,
         val customerId: String,
         val status: OrderStatus = OrderStatus.DRAFT,
         val products: Set<Product>,
         val payment: Payment,
-        val events: Map<*, *>?,
+        val events: Map<*, *>? = null,
         @Version var version: Long?)
 
 

@@ -1,5 +1,6 @@
 package zoret4.allaboutmoney.order.web.resource
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.BDDMockito.anyString
@@ -14,6 +15,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import zoret4.allaboutmoney.order.configuration.toJsonWithMapper
 import zoret4.allaboutmoney.order.model.domain.Order
 import zoret4.allaboutmoney.order.model.domain.factory.OrderTestFactory
 import zoret4.allaboutmoney.order.model.service.contracts.OrderService
@@ -31,7 +33,7 @@ class OrderResourceTest {
     @MockBean
     lateinit var orderService: OrderService
 
-    val baseUri = "/orders"
+    private val baseUri = "/orders"
 
     @Test
     fun `order found = 200`() {
@@ -51,7 +53,7 @@ class OrderResourceTest {
         mvc.perform(MockMvcRequestBuilders
                 .post("$baseUri")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(OrderTestFactory.jsonBody)
+                .content(OrderTestFactory.simple().toJsonWithMapper(ObjectMapper()))
         ).andExpect(MockMvcResultMatchers.status().isCreated)
     }
 }
