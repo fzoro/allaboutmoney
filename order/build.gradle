@@ -45,27 +45,25 @@ repositories {
 ext['springCloudVersion'] = 'Greenwich.M3'
 
 dependencies {
+    //spring
     implementation('org.springframework.boot:spring-boot-starter-actuator')
     implementation('org.springframework.boot:spring-boot-starter-data-mongodb')
-
     implementation('org.springframework.boot:spring-boot-starter-data-rest')
-
     implementation('org.springframework.boot:spring-boot-starter-hateoas')
     implementation('org.springframework.boot:spring-boot-starter-web')
-
     implementation('org.springframework.cloud:spring-cloud-starter-sleuth')
+    implementation('org.springframework.cloud:spring-cloud-starter-sleuth')
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
 
+    //kotlin libs
     implementation('com.fasterxml.jackson.module:jackson-module-kotlin')
-    implementation('org.springframework.cloud:spring-cloud-starter-sleuth')
     implementation('org.jetbrains.kotlin:kotlin-stdlib:1.3.20')
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
-    testImplementation('org.springframework.boot:spring-boot-starter-test')
-
+    //junit 5
     testCompile("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testCompile("org.junit.jupiter:junit-jupiter-params:$junitVersion")
     testRuntime("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
-
     testCompile("org.mockito:mockito-core:$mockitoVersion")
     testCompile("org.mockito:mockito-inline:$mockitoVersion")
     testCompile("org.mockito:mockito-junit-jupiter:$mockitoVersion")
@@ -73,6 +71,11 @@ dependencies {
 
     // Wirecard
     implementation('br.com.moip:java-sdk:4.2.0')
+
+    //dev libs
+    implementation('javax.money:money-api:1.0.3')
+    implementation('org.javamoney:moneta:1.3')
+    implementation('org.zalando:jackson-datatype-money:1.1.1')
 
 }
 

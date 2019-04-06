@@ -10,6 +10,8 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
 
 @Configuration
 class ParserConfig {
+
+    // no needed if fix is applied: https://github.com/wirecardBrasil/moip-sdk-java-le/pull/131
     @Bean
     fun jacksonBuilder(): Jackson2ObjectMapperBuilder {
         abstract class CustomerMixin {

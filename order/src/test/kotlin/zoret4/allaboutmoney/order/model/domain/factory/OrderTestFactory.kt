@@ -9,17 +9,17 @@ sealed class OrderTestFactory {
     companion object {
         fun simple() = Order(customerId = "test-001",
                 products = setOf(Product(id = "product-1",
-                        price = 10,
+                        price = "10",
                         quantity = 2,
-                        description = "montlhy"),
+                        description = "montlh1y"),
                         Product(id = "product-2",
-                                price = 150,
+                                price = "150" ,
                                 quantity = 1,
                                 description = "forever")
                 ),
-                payment = Payment(shipping = 10,
-                        addition = 5,
-                        discount = 4,
+                payment = Payment(shipping = "10",
+                        addition = "5",
+                        discount = "4",
                         currency = Currency.BRL,
                         method = PaymentStrategy.VENDOR_CHECKOUT,
                         processor = PaymentProcessor.WIRECARD

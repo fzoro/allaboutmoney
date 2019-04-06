@@ -10,8 +10,11 @@ import java.util.*
 fun <T> Optional<T>.unwrap(): T? = orElse(null)
 
 fun String.toUUID() = UUID.fromString(this)
+fun String.toWirecardMoney() = this.replace(Regex("[^\\d]"), "").toInt()
 
-fun Any.toJsonWithMapper(objectMapper: ObjectMapper) = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(this)
+
+fun Any.toJsonWithMapper(objectMapper: ObjectMapper) = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(this)!!
+
 
 inline fun <reified R : Any> R.logger(): Logger =
         LoggerFactory.getLogger(this::class.java.name.substringBefore("\$Companion"))
