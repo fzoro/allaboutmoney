@@ -39,7 +39,7 @@ class WirecardOrderService(private val props: AppProperties,
                     .customer(CustomerRequest().id(vendorCustomerId))
                     .amount(OrderAmountRequest().currency(payment.currency.toString())
                             .subtotals(SubtotalsRequest()
-                                    .shipping(payment.shipping)
+                                    .shipping(payment.shipping.intValueExact())
                                     .addition(payment.addition)
                                     .discount(payment.discount)
                             )

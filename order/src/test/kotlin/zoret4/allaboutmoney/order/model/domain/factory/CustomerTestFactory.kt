@@ -2,6 +2,7 @@ package zoret4.allaboutmoney.order.model.domain.factory
 
 import zoret4.allaboutmoney.order.model.domain.Address
 import zoret4.allaboutmoney.order.model.domain.Customer
+import zoret4.allaboutmoney.order.model.domain.Phone
 import zoret4.allaboutmoney.order.model.domain.TaxonomyType
 import java.time.LocalDate
 import java.util.*
@@ -18,7 +19,7 @@ sealed class CustomerTestFactory {
                 birthDate = LocalDate.now(),
                 taxonomyId = "String",
                 taxonomyType = TaxonomyType.CPF,
-                phoneNumber = "String",
+                phoneNumber = Phone("+1", "000", "1234"),
                 address = Address(street = "String",
                         streetNumber = "String",
                         complement = "String",

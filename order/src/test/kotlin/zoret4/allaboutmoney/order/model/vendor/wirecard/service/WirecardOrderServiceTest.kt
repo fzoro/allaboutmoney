@@ -60,7 +60,39 @@ class WirecardOrderServiceTest {
     fun `order request must be build correctly`() {
 
         //service.checkoutByVendor("vendor_customer_id", OrderTestFactory.simple())
-
+//        override fun getOrder(orderId: String)
+//        override fun checkoutByVendor(vendorCustomerId: String, order: Order): String {
+//        val simpleCustomer = CustomerTestFactory.simple()
+//        val wirecardCustomer = Customer()
+//        given(api.customer()).willReturn(customerAPI)
+//        given(customerAPI.create(any())).willReturn(wirecardCustomer)
+//        given(objectMapper.writerWithDefaultPrettyPrinter()).willReturn(objectWriter)
+//        given(objectWriter.writeValueAsString(eq(wirecardCustomer))).willReturn("json")
+//
+//
+//        service.postCustomer(simpleCustomer)
+//
+//        val argument = ArgumentCaptor.forClass(CustomerRequest::class.java)
+//        verify(customerAPI).create(argument.capture())
+//        assertEquals(simpleCustomer.email, argument.value.email)
+//        assertEquals(simpleCustomer.email, argument.value.email)
+//        with(argument.value) {
+//            assertAll("customer request preparation",
+//                    { assertEquals(simpleCustomer.id, ownId) },
+//                    { assertEquals(simpleCustomer.fullName, fullname) },
+//                    { assertEquals(simpleCustomer.email, email) },
+//                    { assertEquals(simpleCustomer.birthDate.toDate().time, birthDate.date.time) },
+//                    { assertEquals(simpleCustomer.taxonomyId, taxDocument.number) },
+//                    { assertEquals(simpleCustomer.taxonomyType.toString(), taxDocument.type.toString()) },
+//                    { assertEquals(simpleCustomer.phoneNumber, phone.number) },
+//                    { assertEquals(simpleCustomer.address.city, shippingAddress.city) },
+//                    { assertEquals(simpleCustomer.address.state, shippingAddress.state) },
+//                    { assertEquals(simpleCustomer.address.street, shippingAddress.street) },
+//                    { assertEquals(simpleCustomer.address.streetNumber, shippingAddress.streetNumber) },
+//                    { assertEquals(simpleCustomer.address.district, shippingAddress.district) }
+//
+//            )
+//        }
     }
 
 }

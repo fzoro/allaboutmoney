@@ -4,6 +4,7 @@ import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.mapping.Document
 import zoret4.allaboutmoney.order.model.strategy.PaymentStrategy
+import java.math.BigDecimal
 import java.util.*
 
 @Document
@@ -23,9 +24,9 @@ data class Product(val id: String, val price: Int, val quantity: Int, val descri
 // wirecard only accepts int.
 // Valor de frete do item, será somado ao valor dos itens. Em centavos. Ex: R$10,32 deve ser informado 1032. Limite de caracteres: 9.
 data class Payment(
-        val shipping: Int,
-        val addition: Int,
-        val discount: Int,
+        val shipping: BigDecimal,
+        val addition: BigDecimal,
+        val discount: BigDecimal,
         val currency: Currency,
         val method: PaymentStrategy,
         val processor: PaymentProcessor

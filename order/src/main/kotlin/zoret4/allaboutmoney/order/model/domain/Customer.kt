@@ -14,10 +14,12 @@ data class Customer(
         val birthDate: LocalDate,
         val taxonomyId: String,
         val taxonomyType: TaxonomyType,
-        val phoneNumber: String,
+        val phoneNumber: Phone,
         val address: Address,
         @Version var version: Long?
 )
+
+data class Phone(val countryCode: String, val areaCode: String, val number: String)
 
 data class Address(val street: String,
                    val streetNumber: String,
