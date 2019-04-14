@@ -13,5 +13,3 @@
 
 
 ### Fixes
-1 - phone number converted to country code + area code + phone number (fix the code and the tests
-2 - the product amount(integer). what's the solution?

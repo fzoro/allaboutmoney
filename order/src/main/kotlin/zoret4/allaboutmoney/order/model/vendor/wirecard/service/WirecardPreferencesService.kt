@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service
 import zoret4.allaboutmoney.order.configuration.logger
 import zoret4.allaboutmoney.order.configuration.props.AppProperties
 import zoret4.allaboutmoney.order.model.service.contracts.vendor.VendorPreferencesService
+import java.util.function.Function
+import java.util.stream.Collectors
 
 
 @Service
@@ -18,13 +20,26 @@ class WirecardPreferencesService(private val props: AppProperties,
         val LOG = logger()
     }
 
-    fun createNotificationPreference() {
-        val notificationRequest = NotificationPreferenceRequest()
+
+    fun syncPreferences() {
         with(props.upstream.wirecard.preferences.notifications) {
-            notificationRequest.target(target)
-            events.forEach { notificationRequest.addEvent(it) }
+            if (events.isEmpty()) return
+            val wirecardNotifications = listNotificationPreference()?.map { it.target to it.events }
+
+            // LOOP OVER events and remove the existent ones. Then, create remaining and remove the ones remaining on wirecardNotifications
+            //val toCreate = events.filter { it.equals(existentNotifications[0].id) }.toList()
+
+            val notificationRequest = NotificationPreferenceRequest()
+                notificationRequest.target(target)
+                events.forEach { notificationRequest.addEvent(it) }
+
         }
-        val notificationPreference = api.notification().create(notificationRequest)
+    }
+
+
+    fun createNotificationPreference(notificationRequest: NotificationPreferenceRequest) {
+        LOG.debug("creating(POST) notification.request={}", notificationRequest)
+        api.notification().create(notificationRequest)
     }
 
     fun wipeOutNotificationPreferences() {
