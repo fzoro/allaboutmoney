@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service
 import zoret4.allaboutmoney.order.configuration.logger
 import zoret4.allaboutmoney.order.configuration.props.AppProperties
 import zoret4.allaboutmoney.order.configuration.toJsonWithMapper
-import zoret4.allaboutmoney.order.configuration.toWirecardMoney
+import zoret4.allaboutmoney.order.configuration.toDigit
 import zoret4.allaboutmoney.order.model.domain.Order
 import zoret4.allaboutmoney.order.model.service.contracts.vendor.VendorOrderService
 
@@ -40,12 +40,12 @@ class WirecardOrderService(private val props: AppProperties,
                     .customer(CustomerRequest().id(vendorCustomerId))
                     .amount(OrderAmountRequest().currency(payment.currency.name)
                             .subtotals(SubtotalsRequest()
-                                    .shipping(payment.shipping.toWirecardMoney())
-                                    .addition(payment.addition.toWirecardMoney())
-                                    .discount(payment.discount.toWirecardMoney())
+                                    .shipping(payment.shipping.toDigit())
+                                    .addition(payment.addition.toDigit())
+                                    .discount(payment.discount.toDigit())
                             )
                     )
-            products.forEach { orderRequest.addItem(it.id, it.quantity, it.description, it.price.toWirecardMoney()) }
+            products.forEach { orderRequest.addItem(it.id, it.quantity, it.description, it.price.toDigit()) }
         }
         LOG.info("Posting OrderRequest to WireCard: query={}", orderRequest)
         val wOrder = api.order().create(orderRequest)

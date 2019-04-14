@@ -14,8 +14,8 @@ data class Customer(
         val birthDate: LocalDate,
         val taxonomyId: String,
         val taxonomyType: TaxonomyType,
-        val phoneNumber: Phone,
-        val address: Address,
+        val phone: Phone,
+        val address: Address, // refactor to a collection.
         @Version var version: Long?
 )
 

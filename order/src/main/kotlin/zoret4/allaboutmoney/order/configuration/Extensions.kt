@@ -10,7 +10,7 @@ import java.util.*
 fun <T> Optional<T>.unwrap(): T? = orElse(null)
 
 fun String.toUUID() = UUID.fromString(this)
-fun String.toWirecardMoney() = this.replace(Regex("[^\\d]"), "").toInt()
+fun String.toDigit() = this.replace(Regex("[^\\d]"), "").toInt()
 
 
 fun Any.toJsonWithMapper(objectMapper: ObjectMapper) = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(this)!!

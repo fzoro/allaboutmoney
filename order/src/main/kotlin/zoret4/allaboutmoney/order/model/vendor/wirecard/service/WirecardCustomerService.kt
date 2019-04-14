@@ -39,9 +39,9 @@ class WirecardCustomerService(private val props: AppProperties,
                             .district(address.district)
 
                     ).phone(PhoneRequest()
-                            .countryCode("55")
-                            .setAreaCode("31")
-                            .setNumber(phoneNumber.number)
+                            .countryCode(phone.countryCode)
+                            .setAreaCode(phone.areaCode)
+                            .setNumber(phone.number)
                     ).taxDocument(
                             if (taxonomyType == TaxonomyType.CPF)
                                 TaxDocumentRequest.cpf(taxonomyId)

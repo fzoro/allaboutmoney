@@ -19,7 +19,7 @@ sealed class CustomerTestFactory {
                 birthDate = LocalDate.now(),
                 taxonomyId = "String",
                 taxonomyType = TaxonomyType.CPF,
-                phoneNumber = Phone("+1", "000", "1234"),
+                phone = Phone("+1", "000", "1234"),
                 address = Address(street = "String",
                         streetNumber = "String",
                         complement = "String",
