@@ -1,21 +1,23 @@
-**** Customer - theoretically it's done
-*** Order
 
 ### Features
-1 - expose an endpoint to be called by wirecard when the order is paid.
-2 - Expose data with Assembler ( https://docs.spring.io/spring-hateoas/docs/current/reference/html/#fundamentals.resource-assembler )
-3 - Write unit tests
-    5.1 - write integration tests ( with wiremock and testcontainer)
-    5.2 - write smoke tests (connect to sandbox)
-4 - Add tracer to entities and spring sleuth
-5 - deploy as a docker container
+1 - Handle the webhooks(update the order)
+1.2 - Best option would be to expose main_app endpoint, redirect the call to order and then do whatever is needed(send an email for instance)
+2 - Configure the main app to use allboutmoney::order.(mostly using docker-compose).
 
+
+### Tech Debts
+1 - Expose data with Assembler ( https://docs.spring.io/spring-hateoas/docs/current/reference/html/#fundamentals.resource-assembler )
+2 - Write unit tests
+    2.1 - write integration tests ( with wiremock and testcontainer)
+    2.2 - write smoke tests (connect to sandbox)
+3 - Add tracer to entities and spring sleuth
+4 - deploy as a docker container
 
 
 ### Fixes
 
 
+### Dev commands
 
-#Dev commands
-
+#start mongo locally
 docker run -d -p 27017:27017 -v /home/fabio/Dev/github/zoret4/allaboutmoney/order/build/dbpath:/data/db mongo
