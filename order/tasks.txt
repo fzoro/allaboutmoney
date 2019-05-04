@@ -10,6 +10,8 @@
 4 - Persist the events on the order collection to keep history of events.
 
 
+5 - Rewrite README.md with workflow. =D
+
 ### Tech Debts
 1 - Expose data with Assembler ( https://docs.spring.io/spring-hateoas/docs/current/reference/html/#fundamentals.resource-assembler )
 2 - Write unit tests
@@ -27,3 +29,4 @@ Should be done at least for order. The reason is there are tokens that cannot be
 
 #start mongo locally
 docker run -d -p 27017:27017 -v /home/fabio/Dev/github/zoret4/allaboutmoney/order/build/dbpath:/data/db mongo
+
