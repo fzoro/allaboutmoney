@@ -16,7 +16,7 @@ class AppProperties {
             val preferences = Preferences()
 
             class Preferences {
-                val notifications = Notifications()
+                val notifications = listOf<Notifications>()
 
                 class Notifications {
                     lateinit var target: String

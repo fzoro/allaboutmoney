@@ -9,14 +9,10 @@ import java.util.*
 
 fun <T> Optional<T>.unwrap(): T? = orElse(null)
 
-fun String.toUUID() = UUID.fromString(this)
-fun String.toDigit() = this.replace(Regex("[^\\d]"), "").toInt()
-
-
+fun String.toDigit(): Int = this.replace(Regex("[^\\d]"), "").toInt()
+fun String.toUUID(): UUID = UUID.fromString(this)
+fun LocalDate.toDate(): Date = Date.from(this.atStartOfDay(ZoneId.systemDefault()).toInstant())
 fun Any.toJsonWithMapper(objectMapper: ObjectMapper) = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(this)!!
 
+inline fun <reified R : Any> R.logger(): Logger = LoggerFactory.getLogger(this::class.java.name.substringBefore("\$Companion"))
 
-inline fun <reified R : Any> R.logger(): Logger =
-        LoggerFactory.getLogger(this::class.java.name.substringBefore("\$Companion"))
-
-fun LocalDate.toDate(): Date = Date.from(this.atStartOfDay(ZoneId.systemDefault()).toInstant())

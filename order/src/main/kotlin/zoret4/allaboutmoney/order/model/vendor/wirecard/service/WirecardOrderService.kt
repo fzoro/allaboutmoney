@@ -10,8 +10,8 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException
 import org.springframework.stereotype.Service
 import zoret4.allaboutmoney.order.configuration.logger
 import zoret4.allaboutmoney.order.configuration.props.AppProperties
-import zoret4.allaboutmoney.order.configuration.toJsonWithMapper
 import zoret4.allaboutmoney.order.configuration.toDigit
+import zoret4.allaboutmoney.order.configuration.toJsonWithMapper
 import zoret4.allaboutmoney.order.model.domain.Order
 import zoret4.allaboutmoney.order.model.service.contracts.vendor.VendorOrderService
 
@@ -43,6 +43,7 @@ class WirecardOrderService(private val props: AppProperties,
                                     .shipping(payment.shipping.toDigit())
                                     .addition(payment.addition.toDigit())
                                     .discount(payment.discount.toDigit())
+
                             )
                     )
             products.forEach { orderRequest.addItem(it.id, it.quantity, it.description, it.price.toDigit()) }

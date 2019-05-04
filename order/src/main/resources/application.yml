@@ -17,11 +17,16 @@ app:
       token: ${WIRECARD_TOKEN}
       key: ${WIRECARD_KEY}
       preferences.notifications:
-        target: ${VENDOR_CALLBACK_EVENTS:http://localhost:8780/events}
-        events:
-          - ORDER.PAID
-          - ORDER.NOT_PAID
-          - ORDER.REVERTED
+        -
+          target: ${VENDOR_CALLBACK_ORDER_EVENTS:http://localhost:8780/wirecard/orders/event}
+          events:
+            - ORDER.PAID
+            - ORDER.NOT_PAID
+            - ORDER.REVERTED
+        -
+          target: ${VENDOR_CALLBACK_PAYMENT_EVENTS:http://localhost:8780/wirecard/payments/event}
+          events:
+            - PAYMENT.*
 
 logging:
   config: classpath:logback-spring.xml

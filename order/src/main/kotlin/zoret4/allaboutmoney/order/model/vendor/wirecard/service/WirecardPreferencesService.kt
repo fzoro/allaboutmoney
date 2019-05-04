@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service
 import zoret4.allaboutmoney.order.configuration.logger
 import zoret4.allaboutmoney.order.configuration.props.AppProperties
 import zoret4.allaboutmoney.order.model.service.contracts.vendor.VendorPreferencesService
-import java.util.function.Function
-import java.util.stream.Collectors
 
 
 @Service
@@ -21,43 +19,32 @@ class WirecardPreferencesService(private val props: AppProperties,
     }
 
 
+    // it always wipe out the existent events and create them again
     fun syncPreferences() {
-        with(props.upstream.wirecard.preferences.notifications) {
-            if (events.isEmpty()) return
-            val wirecardNotifications = listNotificationPreference()?.map { it.target to it.events }
+        wipeOutNotificationPreferences()
+        props.upstream.wirecard.preferences.notifications
+                .map { notification ->
+                    val req = NotificationPreferenceRequest()
+                    req.target(notification.target)
+                    notification.events.forEach { req.addEvent(it) }
+                    req
+                }
+                .forEach { create(it) }
+    }
 
-            // LOOP OVER events and remove the existent ones. Then, create remaining and remove the ones remaining on wirecardNotifications
-            //val toCreate = events.filter { it.equals(existentNotifications[0].id) }.toList()
-
-            val notificationRequest = NotificationPreferenceRequest()
-                notificationRequest.target(target)
-                events.forEach { notificationRequest.addEvent(it) }
-
+    fun wipeOutNotificationPreferences() {
+        list()?.forEach {
+            LOG.warn("removing notification_preference={}", it)
+            delete(it.id)
         }
     }
 
-
-    fun createNotificationPreference(notificationRequest: NotificationPreferenceRequest) {
+    fun create(notificationRequest: NotificationPreferenceRequest) {
         LOG.debug("creating(POST) notification.request={}", notificationRequest)
         api.notification().create(notificationRequest)
     }
 
-    fun wipeOutNotificationPreferences() {
-        listNotificationPreference()?.forEach {
-            LOG.warn("removing notification_preference={}", it)
-            deleteNotificationPreference(it.id)
-        }
-    }
-
-    fun getNotificationPreference(id: String): NotificationPreference? {
-        return api.notification().get(id)
-    }
-
-    fun listNotificationPreference(): NotificationPreferenceListResponse? {
-        return api.notification().list()
-    }
-
-    fun deleteNotificationPreference(id: String) {
-        api.notification().delete(id)
-    }
+    fun get(id: String): NotificationPreference? = api.notification().get(id)
+    fun list(): NotificationPreferenceListResponse? = api.notification().list()
+    fun delete(id: String): Boolean = api.notification().delete(id)
 }
