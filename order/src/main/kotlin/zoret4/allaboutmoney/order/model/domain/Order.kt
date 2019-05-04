@@ -25,7 +25,7 @@ data class Payment(
         val discount: String,
         val currency: Currency,
         val method: PaymentStrategy,
-        val processor: PaymentProcessor
+        val vendor: PaymentVendor
 )
 
 enum class OrderStatus {
@@ -37,7 +37,7 @@ enum class OrderStatus {
     REVERTED // reverted/chargeback by vendor
 }
 
-enum class PaymentProcessor {
+enum class PaymentVendor {
     WIRECARD
 }
 

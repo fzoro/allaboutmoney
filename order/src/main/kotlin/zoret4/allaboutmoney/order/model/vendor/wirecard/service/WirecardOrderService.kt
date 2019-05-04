@@ -33,6 +33,7 @@ class WirecardOrderService(private val props: AppProperties,
     }
 
     override fun checkoutByVendor(vendorCustomerId: String, order: Order): String {
+        LOG.debug("checking out by vendor. vendorCustomerId={} / order={}", vendorCustomerId, order)
         val orderRequest: OrderRequest
         with(order) {
             orderRequest = OrderRequest()

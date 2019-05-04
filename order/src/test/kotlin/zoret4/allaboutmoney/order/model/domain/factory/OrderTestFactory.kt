@@ -22,7 +22,7 @@ sealed class OrderTestFactory {
                         discount = "4",
                         currency = Currency.BRL,
                         method = PaymentStrategy.VENDOR_CHECKOUT,
-                        processor = PaymentProcessor.WIRECARD
+                        vendor = PaymentVendor.WIRECARD
                 ), version = 0)
 
 

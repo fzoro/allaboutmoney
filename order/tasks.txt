@@ -13,3 +13,9 @@
 
 
 ### Fixes
+
+
+
+#Dev commands
+
+docker run -d -p 27017:27017 -v /home/fabio/Dev/github/zoret4/allaboutmoney/order/build/dbpath:/data/db mongo
