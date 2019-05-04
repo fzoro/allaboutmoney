@@ -20,6 +20,7 @@
 
 
 ### Fixes
+Should be done at least for order. The reason is there are tokens that cannot be exposed. - Expose data with Assembler ( https://docs.spring.io/spring-hateoas/docs/current/reference/html/#fundamentals.resource-assembler )
 
 
 ### Dev commands
