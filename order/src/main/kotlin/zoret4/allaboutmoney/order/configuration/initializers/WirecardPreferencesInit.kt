@@ -1,11 +1,9 @@
 package zoret4.allaboutmoney.order.configuration.initializers
 
-import br.com.moip.API
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
 import zoret4.allaboutmoney.order.configuration.logger
-import zoret4.allaboutmoney.order.configuration.props.AppProperties
 import zoret4.allaboutmoney.order.model.vendor.wirecard.service.WirecardPreferencesService
 
 @Component
@@ -19,6 +17,7 @@ class WirecardPreferencesInit(private val preferencesService: WirecardPreference
 
     @EventListener
     fun onStart(event: ContextRefreshedEvent) {
+        LOG.info("registering preferences for WIRECARD vendor")
         preferencesService.syncPreferences()
     }
 }

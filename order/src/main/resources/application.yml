@@ -13,17 +13,20 @@ spring:
 app:
   upstream:
     wirecard:
+      name: WIRECARD
       uri: https://mock.com
       token: ${WIRECARD_TOKEN}
       key: ${WIRECARD_KEY}
       preferences.notifications:
         -
+          name  : ORDER
           target: ${VENDOR_CALLBACK_ORDER_EVENTS:http://localhost:8780/wirecard/orders/event}
           events:
             - ORDER.PAID
             - ORDER.NOT_PAID
             - ORDER.REVERTED
         -
+          name  : PAYMENT
           target: ${VENDOR_CALLBACK_PAYMENT_EVENTS:http://localhost:8780/wirecard/payments/event}
           events:
             - PAYMENT.*

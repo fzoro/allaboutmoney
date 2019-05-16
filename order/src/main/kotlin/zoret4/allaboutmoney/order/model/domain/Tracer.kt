@@ -8,8 +8,8 @@ import java.time.Instant
  * Not used as of now, but should be added
  */
 data class Tracer(
-        @LastModifiedDate val createdAt: Instant,
-        @CreatedDate val updatedAt: Instant,
+        @LastModifiedDate val createdAt: Instant? = null,
+        @CreatedDate val updatedAt: Instant? = null,
         val requestId: String = "todo",
         val createdBy: String = "todo",
         val updatedBy: String = createdBy,

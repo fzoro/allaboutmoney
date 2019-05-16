@@ -1,9 +1,12 @@
 package zoret4.allaboutmoney.order.model.domain
 
+import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.Id
+import org.springframework.data.annotation.LastModifiedBy
 import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 @Document
 data class Customer(

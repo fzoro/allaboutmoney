@@ -10,6 +10,7 @@ class AppProperties {
         val wirecard = Wirecard()
 
         class Wirecard {
+            lateinit var name: String
             lateinit var uri: String
             lateinit var token: String
             lateinit var key: String
@@ -19,6 +20,7 @@ class AppProperties {
                 lateinit var notifications: List<Notifications>
 
                 class Notifications {
+                    lateinit var name:String
                     lateinit var target: String
                     lateinit var events: List<String>
                 }
