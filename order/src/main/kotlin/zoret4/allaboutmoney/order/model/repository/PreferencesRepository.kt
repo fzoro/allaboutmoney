@@ -7,4 +7,5 @@ import zoret4.allaboutmoney.order.model.domain.Preferences
 @Repository
 interface PreferencesRepository : CrudRepository<Preferences, String> {
     fun deleteByVendor_Name(name: String)
+    fun findByVendor_Name(name: String) : Preferences?
 }

@@ -16,6 +16,7 @@ import org.mockito.MockitoAnnotations
 import org.springframework.data.rest.webmvc.ResourceNotFoundException
 import zoret4.allaboutmoney.order.configuration.props.AppProperties
 import zoret4.allaboutmoney.order.model.domain.factory.OrderTestFactory
+import zoret4.allaboutmoney.order.model.repository.PreferencesRepository
 import br.com.moip.resource.Order as WirecardOrder
 
 
@@ -32,12 +33,15 @@ class WirecardOrderServiceTest {
     @Mock
     lateinit var objectWriter: ObjectWriter
 
+    @Mock
+    lateinit var preferencesRepository: PreferencesRepository
+
     private lateinit var wOrder: WirecardOrder
 
     @BeforeEach
     fun setup() {
         MockitoAnnotations.initMocks(this)
-        service = WirecardOrderService(props, objectMapper, api)
+        service = WirecardOrderService(props, objectMapper, api,preferencesRepository)
 
         wOrder = Mockito.mock(WirecardOrder::class.java)
         given(api.order()).willReturn(orderAPI)

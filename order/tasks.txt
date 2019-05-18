@@ -6,6 +6,7 @@
 
 4 - Persist the events on the order collection to keep history of events.
 
+4.1 - Create handler for the new exception(OrderConfiguration)
 
 5 - Rewrite README.md with workflow. =D
 
