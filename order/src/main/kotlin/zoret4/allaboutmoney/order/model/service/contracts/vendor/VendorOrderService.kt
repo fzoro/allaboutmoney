@@ -1,7 +1,7 @@
 package zoret4.allaboutmoney.order.model.service.contracts.vendor
 
-import br.com.moip.resource.Payment
 import zoret4.allaboutmoney.order.model.domain.Order
+import zoret4.allaboutmoney.order.model.domain.OrderStatus
 
 interface VendorOrderService {
 
@@ -15,7 +15,7 @@ interface VendorOrderService {
      */
     fun getOrder(orderId: String): String
 
-    fun handlePaymentEvent(payment: Payment, authToken: String, eventName:String)
+    fun handlePaymentEvent(body: Map<*, *>) : OrderStatus
 
-    fun handleOrderEvent( order : br.com.moip.resource.Order, authToken: String, eventName:String)
+    fun handleOrderEvent(body: Map<*, *>) : OrderStatus
 }

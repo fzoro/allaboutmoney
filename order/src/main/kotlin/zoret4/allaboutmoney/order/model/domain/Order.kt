@@ -14,7 +14,7 @@ data class Order(
         val status: OrderStatus = OrderStatus.DRAFT,
         val products: Set<Product>,
         val payment: Payment,
-        val events: Map<*, *>? = null,
+        var events: List<Map<*,*>>? = null,
         @Version var version: Long?)
 
 data class Product(val id: String, val price: String, val quantity: Int, val description: String)

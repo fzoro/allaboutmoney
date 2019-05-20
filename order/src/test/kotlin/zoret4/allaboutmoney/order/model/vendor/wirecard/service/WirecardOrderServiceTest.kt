@@ -23,8 +23,6 @@ import br.com.moip.resource.Order as WirecardOrder
 class WirecardOrderServiceTest {
     lateinit var service: WirecardOrderService
     @Mock
-    lateinit var props: AppProperties
-    @Mock
     lateinit var objectMapper: ObjectMapper
     @Mock
     lateinit var api: API
@@ -33,15 +31,12 @@ class WirecardOrderServiceTest {
     @Mock
     lateinit var objectWriter: ObjectWriter
 
-    @Mock
-    lateinit var preferencesRepository: PreferencesRepository
-
     private lateinit var wOrder: WirecardOrder
 
     @BeforeEach
     fun setup() {
         MockitoAnnotations.initMocks(this)
-        service = WirecardOrderService(props, objectMapper, api,preferencesRepository)
+        service = WirecardOrderService(objectMapper, api)
 
         wOrder = Mockito.mock(WirecardOrder::class.java)
         given(api.order()).willReturn(orderAPI)

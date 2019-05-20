@@ -20,14 +20,14 @@ app:
       preferences.notifications:
         -
           name  : ORDER
-          target: ${VENDOR_CALLBACK_ORDER_EVENTS:http://localhost:8780/wirecard/events/order}
+          target: ${VENDOR_CALLBACK_ORDER_EVENTS:http://localhost:8780/events/order}
           events:
             - ORDER.PAID
             - ORDER.NOT_PAID
             - ORDER.REVERTED
         -
           name  : PAYMENT
-          target: ${VENDOR_CALLBACK_PAYMENT_EVENTS:http://localhost:8780/wirecard/events/payment}
+          target: ${VENDOR_CALLBACK_PAYMENT_EVENTS:http://localhost:8780/events/payment}
           events:
             - PAYMENT.*
 

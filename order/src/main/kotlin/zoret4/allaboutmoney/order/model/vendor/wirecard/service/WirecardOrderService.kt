@@ -5,26 +5,22 @@ import br.com.moip.request.CustomerRequest
 import br.com.moip.request.OrderAmountRequest
 import br.com.moip.request.OrderRequest
 import br.com.moip.request.SubtotalsRequest
-import br.com.moip.resource.Payment
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.data.rest.webmvc.ResourceNotFoundException
-import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
-import org.springframework.web.client.HttpClientErrorException
 import zoret4.allaboutmoney.order.configuration.logger
-import zoret4.allaboutmoney.order.configuration.props.AppProperties
 import zoret4.allaboutmoney.order.configuration.toDigit
 import zoret4.allaboutmoney.order.configuration.toJsonWithMapper
 import zoret4.allaboutmoney.order.model.domain.Order
+import zoret4.allaboutmoney.order.model.domain.OrderStatus
 import zoret4.allaboutmoney.order.model.exception.OrderConfigurationException
-import zoret4.allaboutmoney.order.model.repository.PreferencesRepository
+import zoret4.allaboutmoney.order.model.exception.VendorIntegrationException
 import zoret4.allaboutmoney.order.model.service.contracts.vendor.VendorOrderService
+import zoret4.allaboutmoney.order.model.vendor.wirecard.configuration.WirecardWebhookEventMapper
 
 @Service
-class WirecardOrderService(private val props: AppProperties,
-                           private val objectMapper: ObjectMapper,
-                           private val api: API,
-                           private val preferencesRepository: PreferencesRepository) : VendorOrderService {
+class WirecardOrderService(private val objectMapper: ObjectMapper,
+                           private val api: API) : VendorOrderService {
     companion object {
         val LOG = logger()
     }
@@ -60,24 +56,22 @@ class WirecardOrderService(private val props: AppProperties,
         return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(wOrder)
     }
 
-    private fun isTokenValid(authToken:String, eventName: String):Boolean{
-        val dbPreferences = preferencesRepository.findByVendor_Name(props.upstream.wirecard.name) ?: throw OrderConfigurationException("Vendor WIRECARD not found on preferences configuration")
-        val dbToken = dbPreferences.vendor.eventTokens[eventName] ?: throw OrderConfigurationException("Event: $eventName not found in database for WIRECARD")
-        val result = dbToken == authToken
+    /**
+     *  Values allowed https://dev.wirecard.com.br/reference#recebendo-webhooks-mp
+     */
+    override fun handleOrderEvent(body: Map<*, *>): OrderStatus {
 
-        if(!result){
-            LOG.warn("dbToken != authToken. Either configuration is wrong or an unknown host tried to trigger a webhook event")
-        }
-        return result
+        body["event"]
+                ?.let { br.com.moip.resource.OrderStatus.valueOf(it as String) }
+                ?.run {
+                    return WirecardWebhookEventMapper.orderEvents[this]
+                            ?: throw OrderConfigurationException("Couldn't find the mapping of $this with current configuration")
+                }
+        throw VendorIntegrationException("'event' field was not present on payload sent by WIRECARD")
     }
 
-    override fun handlePaymentEvent(payment: Payment, authToken: String, eventName:String) {
-        if(!isTokenValid(authToken, eventName)) throw HttpClientErrorException(HttpStatus.UNAUTHORIZED)
+    override fun handlePaymentEvent(body: Map<*, *>): OrderStatus {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-
-    override fun handleOrderEvent(order: br.com.moip.resource.Order, authToken: String, eventName:String) {
-        if(!isTokenValid(authToken, eventName)) throw HttpClientErrorException(HttpStatus.UNAUTHORIZED)
-    }
-
 
 }
