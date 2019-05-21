@@ -62,7 +62,7 @@ class WirecardOrderService(private val objectMapper: ObjectMapper,
     override fun handleOrderEvent(body: Map<*, *>): OrderStatus {
 
         body["event"]
-                ?.let { br.com.moip.resource.OrderStatus.valueOf(it as String) }
+                ?.let { br.com.moip.resource.OrderStatus.valueOf((it as String).split(".")[1]) }
                 ?.run {
                     return WirecardWebhookEventMapper.orderEvents[this]
                             ?: throw OrderConfigurationException("Couldn't find the mapping of $this with current configuration")
