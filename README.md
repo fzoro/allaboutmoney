@@ -1,7 +1,7 @@
 # All About Money - [![CircleCI](https://circleci.com/gh/zoret4/allaboutmoney.svg?style=shield)](https://circleci.com/gh/zoret4/allaboutmoney)
 Is a micro service to handle payments and orders. It is intended to keep your business logic apart from payment/order logic. 
 
-## Tech stack
+## Tech stack -:)
 
 It is fully implemented in *Kotlin 1.3.x*. You can either run on your **JVM** or as a **Docker container**
 
